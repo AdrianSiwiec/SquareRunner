@@ -115,7 +115,7 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     private void updateAndRender(long delta) {
-        currentState.update(delta/1000f);
+        currentState.update(delta/1000000000f);
         currentState.render(graphics);
         renderGameImage();
     }

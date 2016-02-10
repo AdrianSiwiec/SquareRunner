@@ -14,19 +14,45 @@ import android.os.Build;
 import java.io.IOException;
 import java.io.InputStream;
 
+import adrians.framework.animation.Animation;
+import adrians.framework.animation.Frame;
+
 /**
  * Created by pierre on 07/02/16.
  */
 public class Assets {
     private static SoundPool soundPool;
     private static MediaPlayer mediaPlayer;
-    public static Bitmap welcome;
+    public static Bitmap welcome, block, cloud1, cloud2, duck, grass, jump, run1, run2, run3
+        ,run4, run5, scoreDown, score, startDown, start;
+    public static Animation runAnim;
+    public static int hitID, onJumpID;
 
     public static void load() {
         welcome = loadBitmap("welcome.png", false);
-        if(welcome == null) {
-            System.exit(4);
-        }
+        block = loadBitmap("block.png", false);
+        cloud1 = loadBitmap("cloud1.png", true);
+        cloud2 = loadBitmap("cloud2.png", true);
+        duck = loadBitmap("duck.png", true);
+        grass = loadBitmap("grass.png", false);
+        jump = loadBitmap("jump.png", true);
+        run1 = loadBitmap("run_anim1.png", true);
+        run2 = loadBitmap("run_anim2.png", true);
+        run3 = loadBitmap("run_anim3.png", true);
+        run4 = loadBitmap("run_anim4.png", true);
+        run5 = loadBitmap("run_anim5.png", true);
+        scoreDown = loadBitmap("score_button_down.png", true);
+        score = loadBitmap("score_button.png", true);
+        startDown = loadBitmap("start_button_down.png", true);
+        start = loadBitmap("start_button.png", true);
+        Frame f1 = new Frame(run1, .1f);
+        Frame f2 = new Frame(run2, .1f);
+        Frame f3 = new Frame(run3, .1f);
+        Frame f4 = new Frame(run4, .1f);
+        Frame f5 = new Frame(run5, .1f);
+        runAnim = new Animation(f1, f2, f3, f4, f5, f3, f2);
+        hitID = loadSound("hit.wav");
+        onJumpID = loadSound("onjump.wav");
     }
 
     private static Bitmap loadBitmap(String filename, boolean transparency) {

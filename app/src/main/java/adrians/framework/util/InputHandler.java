@@ -18,8 +18,8 @@ public class InputHandler implements OnTouchListener {
     }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int scaledX = (int) (event.getX() / v.getWidth()) * GameMainActivity.GAME_WIDTH;
-        int scaledY = (int) (event.getY() / v.getHeight()) * GameMainActivity.GAME_HEIGHT;
+        int scaledX = (int) ((event.getX() / v.getWidth()) * GameMainActivity.GAME_WIDTH);
+        int scaledY = (int) ((event.getY() / v.getHeight()) * GameMainActivity.GAME_HEIGHT);
         return currentState.onTouch(event, scaledX, scaledY);
     }
 }
