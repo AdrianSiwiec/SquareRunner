@@ -52,4 +52,8 @@ public class Painter {
         dstRectF.set(x, y, x+width, y+height);
         canvas.drawOval(dstRectF, paint);
     }
+
+    public void fillRect(float posX, float posY, float width, float height) {
+        fillRect((int) posX, (int)posY, (int) width, (int) height);
+    }
 }

@@ -1,4 +1,4 @@
-package adrians.simpleandroidgdf;
+package adrians.framework;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
+import android.content.res.AssetFileDescriptor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,13 +21,10 @@ import java.io.InputStream;
 public class Assets {
     private static SoundPool soundPool;
     private static MediaPlayer mediaPlayer;
-    public static Bitmap welcome;
+    public static Bitmap sampleBitmap;
 
     public static void load() {
-        welcome = loadBitmap("welcome.png", false);
-        if(welcome == null) {
-            System.exit(4);
-        }
+        sampleBitmap = loadBitmap("sampleBitmap.png", false);
     }
 
     private static Bitmap loadBitmap(String filename, boolean transparency) {
@@ -78,6 +76,55 @@ public class Assets {
     }
 
     public static void playSound(int soundID) {
-        soundPool.play(soundID, 1, 1, 1, 0, 1);
+        if(!GameMainActivity.playSound) {
+            return;
+        }
+        if(soundPool != null ) {
+            soundPool.play(soundID, 1, 1, 1, 0, 1);
+        }
+    }
+
+    public static void playMusic(String filename, boolean looping) {
+        if(!GameMainActivity.playSound) {
+            return;
+        }
+        if(mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        }
+        try {
+            AssetFileDescriptor afd = GameMainActivity.assets.openFd(filename);
+            mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.prepare();
+            mediaPlayer.setLooping(looping);
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void onResume() {
+        resumeMusic();
+    }
+
+    public static void onPause() {
+        if(soundPool!=null) {
+            soundPool.release();
+            soundPool = null;
+        }
+        pauseMusic();
+    }
+
+    public static void resumeMusic() {
+        playMusic("bgmusic.mp3", true);
+
+    }
+
+    public static void pauseMusic() {
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

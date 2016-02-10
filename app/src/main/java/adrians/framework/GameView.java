@@ -1,4 +1,4 @@
-package adrians.simpleandroidgdf;
+package adrians.framework;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -115,7 +115,7 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     private void updateAndRender(long delta) {
-        currentState.update(delta/1000f);
+        currentState.update(delta/1000000000f);
         currentState.render(graphics);
         renderGameImage();
     }
@@ -127,6 +127,17 @@ public class GameView extends SurfaceView implements Runnable{
             screen.drawBitmap(gameImage, gameImageSrc, gameImageDesc, null);
             getHolder().unlockCanvasAndPost(screen);
 
+        }
+    }
+
+    public void onResume() {
+        if(currentState!=null) {
+            currentState.onResume();
+        }
+    }
+    public void onPause() {
+        if(currentState!=null) {
+            currentState.onPause();
         }
     }
 }

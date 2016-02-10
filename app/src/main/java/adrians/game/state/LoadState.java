@@ -3,7 +3,7 @@ package adrians.game.state;
 import android.view.MotionEvent;
 
 import adrians.framework.util.Painter;
-import adrians.simpleandroidgdf.Assets;
+import adrians.framework.Assets;
 
 /**
  * Created by pierre on 07/02/16.
@@ -16,7 +16,7 @@ public class LoadState extends State {
 
     @Override
     public void update(float delta) {
-        setCurrentState(new MenuState());
+        setCurrentState(new ExampleState());
     }
 
     @Override
