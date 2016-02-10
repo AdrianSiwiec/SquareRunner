@@ -129,4 +129,15 @@ public class GameView extends SurfaceView implements Runnable{
 
         }
     }
+
+    public void onResume() {
+        if(currentState!=null) {
+            currentState.onResume();
+        }
+    }
+    public void onPause() {
+        if(currentState!=null) {
+            currentState.onPause();
+        }
+    }
 }

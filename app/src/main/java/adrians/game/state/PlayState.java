@@ -7,8 +7,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 import adrians.framework.util.Painter;
+import adrians.framework.util.ToggleButton;
+import adrians.framework.util.UIButton;
 import adrians.game.model.Block;
 import adrians.game.model.Cloud;
 import adrians.game.model.Player;
@@ -26,7 +29,11 @@ public class PlayState extends State {
     private final static int BLOCK_HEIGHT = 50, BLOCK_WIDTH = 20;
     private int blockSpeed = -200;
     private static final int PLAYER_WIDTH = 66, PLAYER_HEIGHT = 92;
-    private float recentTouchY;
+    private float recentTouchY, RecentTouchX;
+    private boolean gamePaused = false;
+    private String pausedString = "Game Paused. Tap to resume.";
+    private ToggleButton soundButton, pauseButton;
+    private float fps;
 
     @Override
     public void init() {
@@ -34,6 +41,19 @@ public class PlayState extends State {
         blocks = new ArrayList<Block>();
         cloud = new Cloud(100, 100);
         cloud2 = new Cloud(500, 50);
+        pauseButton = new ToggleButton(100, 60, 160, 120, Assets.playOn, Assets.playOff, true, new Callable<Integer>() {
+            @Override
+            public Integer call() {
+                togglePause(); return 0;
+            }
+        });
+        soundButton = new ToggleButton(20, 60, 80, 120, Assets.soundOn, Assets.soundOff, !GameMainActivity.playSound,
+                new Callable<Integer>() {
+            @Override
+            public Integer call() {
+                GameMainActivity.toggleSound(); return 0;
+            }
+        });
 
         for(int i=0; i<5; i++) {
             Block b = new Block((i+1)*200, GameMainActivity.GAME_HEIGHT - 95, BLOCK_WIDTH, BLOCK_HEIGHT);
@@ -42,14 +62,24 @@ public class PlayState extends State {
     }
 
     @Override
+    public void onPause() {
+        gamePaused = true;
+    }
+
+    @Override
     public void update(float delta) {
+        if(gamePaused) {
+            return;
+        }
         if(!player.isAlive()) {
             setCurrentState(new GameOverState(playerScore / 100));
         }
         playerScore++;
+        pauseButton.setState(!gamePaused);
         if(playerScore % 500 == 0 && blockSpeed>=-280){
             blockSpeed -=10;
         }
+        fps = 1/delta;
         cloud.update(delta);
         cloud2.update(delta);
         Assets.runAnim.update(delta);
@@ -80,6 +110,13 @@ public class PlayState extends State {
         renderClouds(g);
         g.drawImage(Assets.grass, 0, 405);
         renderScore(g);
+        pauseButton.render(g);
+        soundButton.render(g);
+        if(gamePaused) {
+            g.setColor(Color.argb(153, 0, 0, 0));
+            g.fillRect(0, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
+            g.drawString(pausedString, 235, 240);
+        }
     }
 
     private void renderScore(Painter g) {
@@ -125,6 +162,13 @@ public class PlayState extends State {
         if(e.getAction() == MotionEvent.ACTION_DOWN) {
             recentTouchY = scaledY;
         } else if(e.getAction() == MotionEvent.ACTION_UP) {
+            if(gamePaused) {
+                gamePaused = false;
+                return true;
+            } else {
+                pauseButton.onTouchDown(scaledX, scaledY);
+                soundButton.onTouchDown(scaledX, scaledY);
+            }
             if(scaledY - recentTouchY < -50) {
                 player.jump();
             } else if(scaledY - recentTouchY > 50) {
@@ -132,5 +176,9 @@ public class PlayState extends State {
             }
         }
         return true;
+    }
+
+    private void togglePause() {
+        gamePaused ^= true;
     }
 }

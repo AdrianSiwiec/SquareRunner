@@ -10,6 +10,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Build;
+import android.content.res.AssetFileDescriptor;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,7 +25,7 @@ public class Assets {
     private static SoundPool soundPool;
     private static MediaPlayer mediaPlayer;
     public static Bitmap welcome, block, cloud1, cloud2, duck, grass, jump, run1, run2, run3
-        ,run4, run5, scoreDown, score, startDown, start;
+        ,run4, run5, scoreDown, score, startDown, start, soundOn, soundOff, playOn, playOff;
     public static Animation runAnim;
     public static int hitID, onJumpID;
 
@@ -51,8 +52,10 @@ public class Assets {
         Frame f4 = new Frame(run4, .1f);
         Frame f5 = new Frame(run5, .1f);
         runAnim = new Animation(f1, f2, f3, f4, f5, f3, f2);
-        hitID = loadSound("hit.wav");
-        onJumpID = loadSound("onjump.wav");
+        soundOn = loadBitmap("soundButton.png", true);
+        soundOff = loadBitmap("noSoundButton.png", true);
+        playOn = loadBitmap("playButton.png", true);
+        playOff = loadBitmap("pauseButton.png", true);
     }
 
     private static Bitmap loadBitmap(String filename, boolean transparency) {
@@ -104,6 +107,57 @@ public class Assets {
     }
 
     public static void playSound(int soundID) {
-        soundPool.play(soundID, 1, 1, 1, 0, 1);
+        if(!GameMainActivity.playSound) {
+            return;
+        }
+        if(soundPool != null ) {
+            soundPool.play(soundID, 1, 1, 1, 0, 1);
+        }
+    }
+
+    public static void playMusic(String filename, boolean looping) {
+        if(!GameMainActivity.playSound) {
+            return;
+        }
+        if(mediaPlayer == null) {
+            mediaPlayer = new MediaPlayer();
+        }
+        try {
+            AssetFileDescriptor afd = GameMainActivity.assets.openFd(filename);
+            mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+            mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mediaPlayer.prepare();
+            mediaPlayer.setLooping(looping);
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void onResume() {
+        hitID = loadSound("hit.wav");
+        onJumpID = loadSound("onjump.wav");
+        resumeMusic();
+    }
+
+    public static void onPause() {
+        if(soundPool!=null) {
+            soundPool.release();
+            soundPool = null;
+        }
+        pauseMusic();
+    }
+
+    public static void resumeMusic() {
+        playMusic("bgmusic.mp3", true);
+
+    }
+
+    public static void pauseMusic() {
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
     }
 }

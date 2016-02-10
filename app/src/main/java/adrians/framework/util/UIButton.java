@@ -7,9 +7,9 @@ import android.graphics.Rect;
  * Created by pierre on 10/02/16.
  */
 public class UIButton {
-    private Rect butRect;
-    private boolean buttonDown = false;
-    private Bitmap buttonImage, buttonDownImage;
+    protected Rect butRect;
+    protected boolean buttonDown = false;
+    protected Bitmap buttonImage, buttonDownImage;
 
     public UIButton(int left, int top, int right, int bottom, Bitmap buttonImage, Bitmap buttonDownImage) {
         butRect = new Rect(left, top, right, bottom);
@@ -36,5 +36,9 @@ public class UIButton {
 
     public boolean isPressed(int touchX, int touchY) {
         return buttonDown && butRect.contains(touchX, touchY);
+    }
+
+    public Rect getRect() {
+        return butRect;
     }
 }
