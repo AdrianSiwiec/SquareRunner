@@ -3,15 +3,19 @@ package adrians.framework;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 
+import adrians.framework.util.FpsCounter;
 import adrians.framework.util.InputHandler;
 import adrians.framework.util.Painter;
+import adrians.framework.util.FpsCounter;
 import adrians.game.state.LoadState;
 import adrians.game.state.State;
 
@@ -29,6 +33,8 @@ public class GameView extends SurfaceView implements Runnable{
     private volatile State currentState;
 
     private InputHandler inputHandler;
+
+    private boolean showFps = true;
 
     public GameView(Context context, int gameWidth, int gameHeight) {
         super(context);
@@ -80,16 +86,16 @@ public class GameView extends SurfaceView implements Runnable{
 
     @Override
     public void run() {
-        long updateDurationMilis = 0, sleepDurationMilis = 0;
+        long updateDurationNanos = 0, sleepDurationNanos = 0;
         while (running) {
             long beforeUpdateAndRender = System.nanoTime();
-            long deltaMilis = sleepDurationMilis + updateDurationMilis;
-            updateAndRender(deltaMilis);
-            updateDurationMilis = (System.nanoTime() - beforeUpdateAndRender);
-            sleepDurationMilis = Math.max(2, 17-updateDurationMilis);
+            long deltaNanos = sleepDurationNanos + updateDurationNanos;
+            updateAndRender(deltaNanos, beforeUpdateAndRender);
+            updateDurationNanos = (System.nanoTime() - beforeUpdateAndRender);
+            sleepDurationNanos = Math.max(2, (int)(16+2f/3-updateDurationNanos/1e6f));
 
             try {
-                Thread.sleep(sleepDurationMilis);
+                Thread.sleep((int)(sleepDurationNanos/1e6));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -114,9 +120,13 @@ public class GameView extends SurfaceView implements Runnable{
         }
     }
 
-    private void updateAndRender(long delta) {
-        currentState.update(delta/1000000000f);
+    private void updateAndRender(long delta, long nanoTime) {
+        currentState.update(delta/1e9f);
         currentState.render(graphics);
+        if(showFps) {
+            FpsCounter.update(nanoTime);
+            FpsCounter.printFps(graphics);
+        }
         renderGameImage();
     }
 

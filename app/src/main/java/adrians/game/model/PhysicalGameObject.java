@@ -7,7 +7,7 @@ import android.graphics.RectF;
  * Created by pierre on 10/02/16.
  */
 public abstract class PhysicalGameObject extends GameObject {
-    protected float posX, posY, velX, velY, width, height;
+    protected float posX, posY, velX, velY, width, height, rotationAngle;
     protected RectF rect;
     protected Bitmap bitmap;
     public PhysicalGameObject() {}
@@ -25,7 +25,13 @@ public abstract class PhysicalGameObject extends GameObject {
     public PhysicalGameObject(float posX, float posY, float width, float height, Bitmap bitmap) {
         this(posX, posY, width, height);
         this.bitmap = bitmap;
+        this.rotationAngle = 0;
+    }
 
+    public PhysicalGameObject(float posX, float posY, float width, float height, float rotationAngle, Bitmap bitmap) {
+        this(posX, posY, width, height);
+        this.bitmap = bitmap;
+        this.rotationAngle = rotationAngle;
     }
 
     public float getPosX() {
@@ -74,5 +80,13 @@ public abstract class PhysicalGameObject extends GameObject {
 
     public Bitmap getBitmap() {
         return bitmap;
+    }
+
+    public float getRotationAngle() {
+        return rotationAngle;
+    }
+
+    public void setRotationAngle(float rotationAngle) {
+        this.rotationAngle = rotationAngle;
     }
 }

@@ -1,7 +1,6 @@
 package adrians.game.model;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 
 import adrians.framework.util.Painter;
 
@@ -9,18 +8,17 @@ import adrians.framework.util.Painter;
  * Created by pierre on 10/02/16.
  */
 public class ExampleGameObject extends PhysicalGameObject {
-    public ExampleGameObject(float posX, float posY, float width, float height, Bitmap bitmap) {
-        super(posX, posY, width, height, bitmap);
+    public ExampleGameObject(float posX, float posY, float width, float height, float rotationAngle, Bitmap bitmap) {
+        super(posX, posY, width, height, rotationAngle, bitmap);
     }
 
     @Override
-    public void update(double delta) {
-
+    public void update(float delta) {
+        rotationAngle+=delta * 36;
     }
 
     @Override
     public void render(Painter g) {
-        g.setColor(Color.RED);
-        g.fillRect(posX, posY,width, height);
+
     }
 }
