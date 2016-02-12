@@ -30,8 +30,7 @@ public class GameView extends SurfaceView implements Runnable{
 
     private Thread gameThread;
     private volatile boolean running = false;
-    private volatile State currentState;
-
+    private volatile State currentState;  //TODO State Stack instead of single variable
     private InputHandler inputHandler;
 
     private boolean showFps = true;

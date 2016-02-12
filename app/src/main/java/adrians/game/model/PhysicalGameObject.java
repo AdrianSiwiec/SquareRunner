@@ -8,7 +8,6 @@ import android.graphics.RectF;
  */
 public abstract class PhysicalGameObject extends GameObject {
     protected float posX, posY, velX, velY, width, height, rotationAngle;
-    protected RectF rect;
     protected Bitmap bitmap;
     public PhysicalGameObject() {}
     public PhysicalGameObject(float posX, float posY, float width, float height) {
@@ -16,7 +15,6 @@ public abstract class PhysicalGameObject extends GameObject {
         this.posY = posY;
         this.width = width;
         this.height = height;
-        rect = new RectF(posX, posY, posX+width, posY+height);
         velX = 0;
         velY = 0;
         bitmap = null;
@@ -72,10 +70,6 @@ public abstract class PhysicalGameObject extends GameObject {
 
     public float getHeight() {
         return height;
-    }
-
-    public RectF getRect() {
-        return rect;
     }
 
     public Bitmap getBitmap() {

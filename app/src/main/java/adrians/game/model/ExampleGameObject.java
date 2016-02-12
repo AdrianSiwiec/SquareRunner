@@ -14,7 +14,7 @@ public class ExampleGameObject extends PhysicalGameObject {
 
     @Override
     public void update(float delta) {
-        rotationAngle+=delta * 36;
+        rotationAngle += 36*delta;
     }
 
     @Override

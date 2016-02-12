@@ -1,5 +1,6 @@
 package adrians.game.camera;
 
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
@@ -11,42 +12,60 @@ import adrians.game.model.PhysicalGameObject;
  * Created by pierre on 10/02/16.
  */
 public class Camera {
-    private float posX, posY, width, height;
+    private float posX, posY, width, height, rotationAngle;
     private int screenHeight, screenWidth;
-    private int rX, rY, rW, rH;
-    private RectF rect;
-
+    private Matrix matrix;
+    private float[] tmpPoints;
+    private float nW, nH;
     public Camera(float posX, float posY, float width, int screenWidth, int screenHeight) {
         this.posX = posX;
         this.posY = posY;
         this.width = width;
-        this.height = width * (float)screenHeight / (float) screenWidth;
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
-        rect = new RectF();
-        updateRect();
+        rotationAngle = 0;
+        tmpPoints = new float[2];
+        nW = nH = 0;
+        setHeight();
+        matrix = new Matrix();
+        calculateMatrix();
     }
 
-    private void updateRect() {
-        rect.set(posX - width, posY - height, posX + width, posY + height);
+    public Camera(float posX, float posY, float width, float rotationAngle, int screenWidth, int screenHeight) {
+        this(posX, posY, width, screenWidth, screenHeight);
+        this.rotationAngle = rotationAngle;
+        calculateMatrix();
+    }
+
+    public void update(float delta) {
+        //posX-=30*delta;
+        calculateMatrix();
+    }
+
+    private void calculateMatrix() {
+        matrix.reset();
+        matrix.preScale(screenWidth / width / 2, screenWidth / width / 2);
+        matrix.preTranslate(-posX + width, -posY + height);
+        matrix.preRotate(-rotationAngle, posX, posY);
+    }
+
+    private void setHeight() {
+        height = width * screenHeight/screenWidth;
     }
 
     public void renderObject(PhysicalGameObject object, Painter g) {
-        if(object == null) {
+        if (object == null) {
             return;
         }
-        RectF oRect = object.getRect();
-        if(!RectF.intersects(object.getRect(), rect)){
-            return;
-        }
-        rX = scale(object.getPosX(), rect.left, width*2, screenWidth);
-        rY = scale(object.getPosY(), rect.top, height*2, screenHeight);
-        rW = scale(object.getPosX()+object.getWidth(), rect.left, width*2, screenWidth) - rX;
-        rH = scale(object.getPosY()+object.getHeight(), rect.top, height*2, screenHeight) - rY;
-        g.drawImage(object.getBitmap(), rX, rY, rW, rH, object.getRotationAngle());
-    }
+        tmpPoints[0] = object.getPosX();
+        tmpPoints[1] = object.getPosY();
 
-    private int scale(float position, float beg, float size, int screenSize) {
-        return (int) ((position - beg)/(double)(size)*screenSize);
+        matrix.mapPoints(tmpPoints);
+        nW = matrix.mapRadius(object.getWidth());
+        nH = matrix.mapRadius(object.getHeight());
+
+        g.drawImage(object.getBitmap(), (int) (tmpPoints[0] - nW), (int) (tmpPoints[1] - nH),
+                (int) nW * 2, (int) nH * 2, -rotationAngle + object.getRotationAngle());
+
     }
 }

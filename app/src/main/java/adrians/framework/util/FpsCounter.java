@@ -11,6 +11,7 @@ import java.util.Queue;
  */
 public class FpsCounter {
     private static LinkedList<Long> updates = new LinkedList<Long>();
+    private static String[] stringTable = new String[120];
     public static void update(long updateNano) {
         updates.add(updateNano);
         while(!updates.isEmpty() && updateNano - updates.peekFirst() > 1e9) {
@@ -24,6 +25,13 @@ public class FpsCounter {
     public static void printFps(Painter g) {
         g.setFont(Typeface.SANS_SERIF, 80);
         g.setColor(Color.BLACK);
-        g.drawString("FPS: " + getFps(), 10, 100);
+        g.drawString(fpsString(getFps()), 10, 100);
+    }
+
+    private static String fpsString(int n) {
+        if(stringTable[n] == null) {
+            stringTable[n] = "FPS: " + n;
+        }
+        return stringTable[n];
     }
 }

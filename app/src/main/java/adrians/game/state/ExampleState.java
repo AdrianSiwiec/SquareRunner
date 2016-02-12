@@ -22,20 +22,21 @@ public class ExampleState extends State{
     Camera camera;
     @Override
     public void init() {
-        list = new ExampleGameObject[20];
-        for(int i=0; i<list.length; i++) {
-            list[i] = new ExampleGameObject(RandomNumberGenerator.getRandIntBetween(-400, 400), RandomNumberGenerator.getRandIntBetween(-200, 200),
-                    RandomNumberGenerator.getRandIntBetween(10, 100), RandomNumberGenerator.getRandIntBetween(10, 100), RandomNumberGenerator.getRandIntBetween(0, 360),
-                    Assets.sampleBitmap);
-        }
-        camera = new Camera(0, 0, 400, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
+        list = new ExampleGameObject[5];
+        list[0] = new ExampleGameObject(-50, -50, 10, 10, 0, Assets.sampleBitmap);
+        list[1] = new ExampleGameObject(50, -50, 10, 10, 0, Assets.sampleBitmap);
+        list[2] = new ExampleGameObject(-50, 50, 10, 10, 0, Assets.sampleBitmap);
+        list[3] = new ExampleGameObject(50, 50, 10, 10, 0, Assets.sampleBitmap);
+        list[4] = new ExampleGameObject(100, 0, 15, 40, 0, Assets.sampleBitmap);
+        camera = new Camera(100, 0, 200, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
     }
 
     @Override
     public void update(float delta) {
         for(int i=0; i<list.length; i++) {
-            list[i].update(delta*2*(i+1)/list.length);
+            list[i].update(delta);
         }
+        camera.update(delta);
     }
 
     @Override
