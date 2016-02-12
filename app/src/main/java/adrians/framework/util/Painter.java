@@ -51,10 +51,27 @@ public class Painter {
         srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
         dstRect.set(x, y, x+width, y+height);
         canvas.save();
-        canvas.rotate(rotationAngle, x+width/2, y+height/2);
+        canvas.rotate(rotationAngle, x + width / 2, y + height / 2);
         canvas.drawBitmap(bitmap, srcRect, dstRect, paint);
         canvas.restore();
     }
+    public void drawImage(Bitmap bitmap, float x, float y) {
+        canvas.drawBitmap(bitmap, x, y, paint);
+    }
+    public void drawImage(Bitmap bitmap, float x, float y, float width, float height) {
+        srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        dstRectF.set(x, y, x+width, y+height);
+        canvas.drawBitmap(bitmap, srcRect, dstRectF, paint);
+    }
+    public void drawImage(Bitmap bitmap, float x, float y, float width, float height, float rotationAngle) {
+        srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        dstRectF.set(x, y, x+width, y+height);
+        canvas.save();
+        canvas.rotate(rotationAngle, x+width/2, y+height/2);
+        canvas.drawBitmap(bitmap, srcRect, dstRectF, paint);
+        canvas.restore();
+    }
+
     public void fillOval(int x, int y, int width, int height) {
         paint.setStyle(Paint.Style.FILL);
         dstRectF.set(x, y, x+width, y+height);

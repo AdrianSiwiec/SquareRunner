@@ -38,13 +38,14 @@ public class Camera {
     }
 
     public void update(float delta) {
-        //posX-=30*delta;
+        width+=20*delta;
+        setHeight();
         calculateMatrix();
     }
 
     private void calculateMatrix() {
         matrix.reset();
-        matrix.preScale(screenWidth / width / 2, screenWidth / width / 2);
+        matrix.preScale(screenWidth / width / 2, screenHeight / height / 2);
         matrix.preTranslate(-posX + width, -posY + height);
         matrix.preRotate(-rotationAngle, posX, posY);
     }
@@ -64,8 +65,8 @@ public class Camera {
         nW = matrix.mapRadius(object.getWidth());
         nH = matrix.mapRadius(object.getHeight());
 
-        g.drawImage(object.getBitmap(), (int) (tmpPoints[0] - nW), (int) (tmpPoints[1] - nH),
-                (int) nW * 2, (int) nH * 2, -rotationAngle + object.getRotationAngle());
+        g.drawImage(object.getBitmap(), tmpPoints[0] - nW, tmpPoints[1] - nH,
+                nW * 2, nH * 2, -rotationAngle + object.getRotationAngle());
 
     }
 }
