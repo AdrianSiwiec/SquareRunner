@@ -1,6 +1,7 @@
 package adrians.game.camera;
 
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
@@ -14,7 +15,7 @@ import adrians.game.model.PhysicalGameObject;
 public class Camera {
     private float posX, posY, width, height, rotationAngle;
     private int screenHeight, screenWidth;
-    private Matrix matrix;
+    private Matrix matrix, reversedMatrix;
     private float[] tmpPoints;
     private float nW, nH;
     public Camera(float posX, float posY, float width, int screenWidth, int screenHeight) {
@@ -28,6 +29,7 @@ public class Camera {
         nW = nH = 0;
         setHeight();
         matrix = new Matrix();
+        reversedMatrix = new Matrix();
         calculateMatrix();
     }
 
@@ -38,9 +40,16 @@ public class Camera {
     }
 
     public void update(float delta) {
-        width+=20*delta;
-        setHeight();
-        calculateMatrix();
+    }
+
+    public PointF getWorldCoords(float x, float y) {
+        tmpPoints[0] = x;
+        tmpPoints[1] = y;
+        reversedMatrix.mapPoints(tmpPoints);
+        PointF point = new PointF();
+        point.x = tmpPoints[0];
+        point.y = tmpPoints[1];
+        return point;
     }
 
     private void calculateMatrix() {
@@ -48,6 +57,7 @@ public class Camera {
         matrix.preScale(screenWidth / width / 2, screenHeight / height / 2);
         matrix.preTranslate(-posX + width, -posY + height);
         matrix.preRotate(-rotationAngle, posX, posY);
+        matrix.invert(reversedMatrix);
     }
 
     private void setHeight() {

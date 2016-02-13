@@ -76,6 +76,10 @@ public class GameView extends SurfaceView implements Runnable{
         inputHandler.setCurrentState(currentState);
     }
 
+    public State getCurrentState() {
+        return currentState;
+    }
+
     private void initInput() {
         if(inputHandler == null) {
             inputHandler = new InputHandler();
