@@ -21,10 +21,13 @@ import java.io.InputStream;
 public class Assets {
     private static SoundPool soundPool;
     private static MediaPlayer mediaPlayer;
-    public static Bitmap sampleBitmap;
+    public static Bitmap sampleBitmap, stickBitmap, stickButtonBitmap, squareButtonBitmap;
 
     public static void load() {
         sampleBitmap = loadBitmap("sampleBitmap.png", false);
+        stickBitmap = loadBitmap("stickBase.png", true);
+        stickButtonBitmap = loadBitmap("stickButton.png", true);
+        squareButtonBitmap = loadBitmap("squareButton.png", true);
     }
 
     private static Bitmap loadBitmap(String filename, boolean transparency) {

@@ -13,6 +13,8 @@ public class TouchPointer {
     private PhysicalGameObject originObject;
     private int id;
 
+    boolean isWorld;
+
     public  TouchPointer(PointF pt, int id, PhysicalGameObject originObject) {
         this.originObject = originObject;
         this.id = id;
@@ -83,5 +85,13 @@ public class TouchPointer {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public boolean isWorld() {
+        return isWorld;
+    }
+
+    public void setIsWorld(boolean isWorld) {
+        this.isWorld = isWorld;
     }
 }

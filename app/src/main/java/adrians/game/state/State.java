@@ -1,6 +1,5 @@
 package adrians.game.state;
 
-import android.util.Log;
 import android.view.MotionEvent;
 
 import java.util.HashMap;
@@ -9,21 +8,22 @@ import adrians.framework.util.Painter;
 import adrians.framework.GameMainActivity;
 import adrians.framework.util.TouchPointer;
 import adrians.game.camera.Camera;
-import adrians.game.model.ExampleGameObject;
 import adrians.game.model.PhysicalGameObject;
 
 /**
  * Created by pierre on 06/02/16.
  */
 public abstract class State {
-    protected PhysicalGameObject objectList[];
-    protected Camera camera;
+    protected PhysicalGameObject worldObjects[], fixedObjects[];
+    protected Camera worldCamera, fixedCamera;
     protected HashMap<Integer, TouchPointer> pointers;
     protected HashMap<PhysicalGameObject, Integer> objectsPointedAt;
 
     public State() {
         pointers = new HashMap<>();
         objectsPointedAt = new HashMap<>();
+        worldCamera = new Camera(0, 0, 100, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
+        fixedCamera = new Camera(0, 0, 100, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
     }
 
     public void setCurrentState(State newState) {
@@ -31,17 +31,25 @@ public abstract class State {
     }
     public abstract void init();
 
-    public void update(float delta) {
-        for(int i=0; i<objectList.length; i++) {
-            objectList[i].update(delta);
+    public synchronized void update(float delta) {
+        fixedCamera.update(delta);
+        for(int i=0; i<fixedObjects.length; i++) {
+            fixedObjects[i].update(delta);
+        }
+        worldCamera.update(delta);
+        for(int i=0; i< worldObjects.length; i++) {
+            worldObjects[i].update(delta);
         }
     }
-    public void render(Painter g) {
-        for(int i=0; i<objectList.length; i++) {
-            camera.renderObject(objectList[i], g);
+    public synchronized void render(Painter g) {
+        for(int i=0; i< worldObjects.length; i++) {
+            worldObjects[i].render(g, worldCamera);
+        }
+        for(int i=0; i<fixedObjects.length; i++) {
+            fixedObjects[i].render(g, fixedCamera);
         }
     }
-    public boolean onTouch(MotionEvent e, int scaledX, int scaledY) {
+    public synchronized boolean onTouch(MotionEvent e, int scaledX, int scaledY) {
         if(e.getActionMasked() == MotionEvent.ACTION_DOWN || e.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN) {
             int index;
             if(e.getActionMasked() == MotionEvent.ACTION_DOWN) {
@@ -50,12 +58,21 @@ public abstract class State {
                 index = e.getActionIndex();
             }
 
-            TouchPointer ptr = new TouchPointer(camera.getWorldCoords(e.getX(index), e.getY(index)), e.getPointerId(index), null);
-            Log.d("DOWN", e.getPointerId(index) + "");
-            for(int i=objectList.length-1; i>=0; i--) {
-                if(objectList[i].isInside(ptr)) {
-                    ptr.setOriginObject(objectList[i]);
-                    break;
+            TouchPointer ptr = new TouchPointer(fixedCamera.getWorldCoords(e.getX(index), e.getY(index)), e.getPointerId(index), null);
+            ptr.setIsWorld(false);
+            for(int i=fixedObjects.length-1; i>=0; i--) {
+                if(fixedObjects[i].isInside(ptr)) {
+                    ptr.setOriginObject(fixedObjects[i]);
+                    break;                }
+            }
+            if(ptr.getOriginObject()==null) {
+                ptr.setIsWorld(true);
+                ptr.setBeg(worldCamera.getWorldCoords(e.getX(index), e.getY(index)));
+                for (int i = worldObjects.length - 1; i >= 0; i--) {
+                    if (worldObjects[i].isInside(ptr)) {
+                        ptr.setOriginObject(worldObjects[i]);
+                        break;
+                    }
                 }
             }
             if(ptr.getOriginObject() != null) {
@@ -73,8 +90,13 @@ public abstract class State {
                 if(pointers.get(e.getPointerId(i)) == null) {
                     continue;
                 }
-                pointers.get(e.getPointerId(i)).update(camera.getWorldCoords(e.getX(i), e.getY(i)));
-                pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
+                if(pointers.get(e.getPointerId(i)).isWorld()) {
+                    pointers.get(e.getPointerId(i)).update(worldCamera.getWorldCoords(e.getX(i), e.getY(i)));
+                    pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
+                } else {
+                    pointers.get(e.getPointerId(i)).update(fixedCamera.getWorldCoords(e.getX(i), e.getY(i)));
+                    pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
+                }
             }
             for(PhysicalGameObject o: objectsPointedAt.keySet()) {
                 o.onPointerMove();
@@ -105,5 +127,4 @@ public abstract class State {
 
     public void onResume() {}
     public void onPause() {}
-
 }

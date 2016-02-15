@@ -22,7 +22,7 @@ public class GameMainActivity extends Activity {
     public static boolean playSound = true;
 
     private static SharedPreferences prefs;
-    private static final String highScoreKey = "highScoreKey";
+    private static final String highScoreKey = "highScoreKey"; //TODO Clean up
     private static int highScore;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

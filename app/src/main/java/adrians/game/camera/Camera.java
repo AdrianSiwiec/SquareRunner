@@ -1,10 +1,8 @@
 package adrians.game.camera;
 
+import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.util.Log;
 
 import adrians.framework.util.Painter;
 import adrians.game.model.PhysicalGameObject;
@@ -18,6 +16,7 @@ public class Camera {
     private Matrix matrix, reversedMatrix;
     private float[] tmpPoints;
     private float nW, nH;
+    private PointF tmpPoint = new PointF();
     public Camera(float posX, float posY, float width, int screenWidth, int screenHeight) {
         this.posX = posX;
         this.posY = posY;
@@ -27,7 +26,7 @@ public class Camera {
         rotationAngle = 0;
         tmpPoints = new float[2];
         nW = nH = 0;
-        setHeight();
+        calculateHeight();
         matrix = new Matrix();
         reversedMatrix = new Matrix();
         calculateMatrix();
@@ -42,17 +41,33 @@ public class Camera {
     public void update(float delta) {
     }
 
-    public PointF getWorldCoords(float x, float y) {
+    public synchronized PointF getWorldCoords(float x, float y) {
         tmpPoints[0] = x;
         tmpPoints[1] = y;
         reversedMatrix.mapPoints(tmpPoints);
-        PointF point = new PointF();
-        point.x = tmpPoints[0];
-        point.y = tmpPoints[1];
-        return point;
+        tmpPoint.x = tmpPoints[0];
+        tmpPoint.y = tmpPoints[1];
+        return tmpPoint;
     }
 
-    private void calculateMatrix() {
+    public synchronized PointF getScreenCoords(float x, float y) {
+        tmpPoints[0] = x;
+        tmpPoints[1] = y;
+        matrix.mapPoints(tmpPoints);
+        tmpPoint.x = tmpPoints[0];
+        tmpPoint.y = tmpPoints[1];
+        return tmpPoint;
+    }
+
+    public synchronized float getWorldDistance(float r) {
+        return reversedMatrix.mapRadius(r);
+    }
+
+    public synchronized float getScreenDistance(float r) {
+        return matrix.mapRadius(r);
+    }
+
+    private synchronized void calculateMatrix() {
         matrix.reset();
         matrix.preScale(screenWidth / width / 2, screenHeight / height / 2);
         matrix.preTranslate(-posX + width, -posY + height);
@@ -60,11 +75,27 @@ public class Camera {
         matrix.invert(reversedMatrix);
     }
 
-    private void setHeight() {
+    private synchronized void calculateHeight() {
         height = width * screenHeight/screenWidth;
     }
 
-    public void renderObject(PhysicalGameObject object, Painter g) {
+    public float getRotationAngle() {
+        return rotationAngle;
+    }
+
+    public void setRotationAngle(float rotationAngle) {
+        this.rotationAngle = rotationAngle;
+        calculateMatrix();
+    }
+
+    public synchronized void setWidth(float width) {
+        this.width = width;
+        calculateHeight();
+        calculateMatrix();
+
+    }
+
+    public synchronized void renderObject(PhysicalGameObject object, Painter g) {
         if (object == null) {
             return;
         }
@@ -78,5 +109,29 @@ public class Camera {
         g.drawImage(object.getBitmap(), tmpPoints[0] - nW, tmpPoints[1] - nH,
                 nW * 2, nH * 2, -rotationAngle + object.getRotationAngle());
 
+    }
+
+    public synchronized void renderBitmap(float posX, float posY, float width, float height, Bitmap bitmap, Painter g) {
+        tmpPoints[0] = posX;
+        tmpPoints[1] = posY;
+        matrix.mapPoints(tmpPoints);
+        nW = matrix.mapRadius(width);
+        nH = matrix.mapRadius(height);
+        g.drawImage(bitmap, tmpPoints[0] - nW, tmpPoints[1] - nH,
+                nW * 2, nH * 2);
+    }
+
+    public void move(float x, float y) {
+        posX +=x;
+        posY +=y;
+        calculateMatrix();
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
     }
 }
