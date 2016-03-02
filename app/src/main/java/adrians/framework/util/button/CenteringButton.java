@@ -13,17 +13,16 @@ import adrians.game.camera.Camera;
 public class CenteringButton extends AnalogButton{
     public long visibleNanos, vanishingNanos, sinceLastActionNanos;
     public int alpha;
-    public CenteringButton(float x, float y, float width, float height, Bitmap bitmap,
-                           float buttonWidth, float buttonHeight, Bitmap buttonBitmap,
-                           float visibleTime) {
-        super(x, y, width, height, bitmap, buttonWidth, buttonHeight, buttonBitmap);
+    public CenteringButton(PointF pos, PointF size, Bitmap bitmap, PointF buttonSize,
+                           Bitmap buttonBitmap, float visibleTime) {
+        super(pos, size, bitmap, buttonSize, buttonBitmap);
         this.visibleNanos = (long) (visibleTime * 1e9f);
         vanishingNanos = (long) 1e10;
         sinceLastActionNanos = 0;
     }
 
     @Override
-    public  synchronized void update(float delta) {
+    public synchronized void update(float delta) {
         if(pointers.size()==0) {
             val.x *= 0.01 / delta;
             val.y *= 0.01 / delta;
@@ -39,7 +38,7 @@ public class CenteringButton extends AnalogButton{
 
     @Override public synchronized void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
-        PointF coords = camera.getScreenCoords(posX + val.x*width, posY + val.y*height);
+        PointF coords = camera.getScreenCoords(pos.x + val.x*size.x, pos.y + val.y*size.y);
         float nW = camera.getScreenDistance(buttonSize.x);
         float nH = camera.getScreenDistance(buttonSize.y);
         g.drawImageTransparent(buttonBitmap, coords.x - nW , coords.y - nH, nW*2, nH*2, alpha);

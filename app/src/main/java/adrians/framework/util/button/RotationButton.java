@@ -3,28 +3,38 @@ package adrians.framework.util.button;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 
-import java.lang.Math;
-
 /**
  * Created by pierre on 15/02/16.
  */
 public class RotationButton extends AnalogButton {
-    public RotationButton(float x, float y, float width, float height, Bitmap bitmap, float buttonWidth, float buttonHeight, Bitmap buttonBitmap) {
-        super(x, y, width, height, bitmap, buttonWidth, buttonHeight, buttonBitmap);
+    float centeringDistance = 0.2f;
+    public RotationButton(PointF pos, PointF size, Bitmap bitmap, PointF buttonSize, Bitmap buttonBitmap) {
+        super(pos, size, bitmap, buttonSize, buttonBitmap);
+        val.y = -1/1.2f;
     }
 
     @Override
     public  synchronized void updateButton() {
         if(pointers.size()>0) {
             val = pointers.getFirst().getCurRel();
-            val.x = Math.min(1, val.x);
-            val.y = Math.max(-1, val.y);
-            val.y = Math.min(1, val.y);
-            val.y = Math.max(-1, val.y);
             float length = val.length();
-            if(length != 0) {
-                val.x /= length * 1.2;
-                val.y /= length * 1.2;
+            val.x /= length * 1.2;
+            val.y /= length * 1.2;
+            if(val.x > 1 - centeringDistance) {
+                val.x = 1;
+                val.y = 0;
+            }
+            if(val.x < -1 + centeringDistance) {
+                val.x = -1;
+                val.y = 0;
+            }
+            if(val.y > 1 -centeringDistance) {
+                val.y = 1;
+                val.x = 0;
+            }
+            if(val.y < -1 + centeringDistance) {
+                val.y = -1;
+                val.x = 0;
             }
         }
     }

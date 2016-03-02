@@ -1,14 +1,10 @@
 package adrians.game.model;
 
 import android.graphics.Bitmap;
-import android.graphics.RectF;
-import android.util.Log;
+import android.graphics.PointF;
 
-import java.util.Calendar;
 import java.util.LinkedList;
-import java.util.Map;
 
-import adrians.framework.GameMainActivity;
 import adrians.framework.util.Painter;
 import adrians.framework.util.TouchPointer;
 import adrians.game.camera.Camera;
@@ -17,20 +13,16 @@ import adrians.game.camera.Camera;
  * Created by pierre on 10/02/16.
  */
 public abstract class PhysicalGameObject extends GameObject {
-    protected volatile float posX, posY, velX, velY, width, height, rotationAngle; //TODO Migrate to Point
+    protected PointF pos, vel, size;
+    protected float rotationAngle;
     protected Bitmap bitmap;
     protected LinkedList<TouchPointer> pointers;
-    protected boolean isPosRelative;
-    public PhysicalGameObject() {}
-    public PhysicalGameObject(float posX, float posY, float width, float height) {
-        this.posX = posX;
-        this.posY = posY;
-        this.width = width;
-        this.height = height;
-        velX = 0;
-        velY = 0;
+    public PhysicalGameObject(PointF pos, PointF size) {
+        this.pos = pos;
+        this.size = size;
+        vel = new PointF(0, 0);
         bitmap = null;
-        pointers = new LinkedList<TouchPointer>();
+        pointers = new LinkedList<>();
     }
 
     public void update(float delta){}
@@ -39,21 +31,21 @@ public abstract class PhysicalGameObject extends GameObject {
         camera.renderObject(this, g);
     }
 
-    public PhysicalGameObject(float posX, float posY, float width, float height, Bitmap bitmap) {
-        this(posX, posY, width, height);
+    public PhysicalGameObject(PointF pos, PointF size, Bitmap bitmap) {
+        this(pos, size);
         this.bitmap = bitmap;
         this.rotationAngle = 0;
     }
 
-    public PhysicalGameObject(float posX, float posY, float width, float height, float rotationAngle, Bitmap bitmap) {
-        this(posX, posY, width, height);
+    public PhysicalGameObject(PointF pos, PointF size, float rotationAngle, Bitmap bitmap) {
+        this(pos, size);
         this.bitmap = bitmap;
         this.rotationAngle = rotationAngle;
     }
 
     public synchronized boolean isInside(TouchPointer ptr) {
-        return(ptr.getBeg().x >= posX - width && ptr.getBeg().x <= posX + width &&
-                ptr.getBeg().y >= posY - height && ptr.getBeg().y <=posY + height);
+        return(ptr.getBeg().x >= pos.x - size.x && ptr.getBeg().x <= pos.x + size.x &&
+                ptr.getBeg().y >= pos.y - size.y && ptr.getBeg().y <=pos.y + size.y);
     }
 
     public synchronized void onPointerDown(TouchPointer ptr) {
@@ -77,46 +69,6 @@ public abstract class PhysicalGameObject extends GameObject {
         pointers.remove(ptr);
     }
 
-    public synchronized float getPosX() {
-        return posX;
-    }
-
-    public synchronized void setPosX(float posX) {
-        this.posX = posX;
-    }
-
-    public synchronized float getPosY() {
-        return posY;
-    }
-
-    public void setPosY(float posY) {
-        this.posY = posY;
-    }
-
-    public float getVelX() {
-        return velX;
-    }
-
-    public void setVelX(float velX) {
-        this.velX = velX;
-    }
-
-    public float getVelY() {
-        return velY;
-    }
-
-    public void setVelY(float velY) {
-        this.velY = velY;
-    }
-
-    public synchronized float getWidth() {
-        return width;
-    }
-
-    public synchronized float getHeight() {
-        return height;
-    }
-
     public synchronized Bitmap getBitmap() {
         return bitmap;
     }
@@ -126,6 +78,31 @@ public abstract class PhysicalGameObject extends GameObject {
     }
 
     public void setRotationAngle(float rotationAngle) {
+
         this.rotationAngle = rotationAngle;
+    }
+
+    public PointF getPos() {
+        return pos;
+    }
+
+    public void setPos(PointF pos) {
+        this.pos = pos;
+    }
+
+    public PointF getVel() {
+        return vel;
+    }
+
+    public void setVel(PointF vel) {
+        this.vel = vel;
+    }
+
+    public PointF getSize() {
+        return size;
+    }
+
+    public void setSize(PointF size) {
+        this.size = size;
     }
 }

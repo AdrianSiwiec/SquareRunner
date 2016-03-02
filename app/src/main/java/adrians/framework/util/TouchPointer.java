@@ -1,6 +1,5 @@
 package adrians.framework.util;
 
-import android.graphics.Point;
 import android.graphics.PointF;
 
 import adrians.game.model.PhysicalGameObject;
@@ -29,13 +28,13 @@ public class TouchPointer {
     }
 
     private void updateCurRel() {
-        curRel.x = (cur.x - originObject.getPosX()) / originObject.getWidth();
-        curRel.y = (cur.y - originObject.getPosY()) / originObject.getHeight();
+        curRel.x = (cur.x - originObject.getPos().x) / originObject.getSize().x;
+        curRel.y = (cur.y - originObject.getPos().y) / originObject.getSize().y;
     }
 
     private void updateBegRel() {
-        begRel.x = (beg.x - originObject.getPosX()) / originObject.getWidth();
-        begRel.y = (beg.y - originObject.getPosY()) / originObject.getHeight();
+        begRel.x = (beg.x - originObject.getPos().x) / originObject.getSize().x;
+        begRel.y = (beg.y - originObject.getPos().y) / originObject.getSize().y;
     }
 
     public void update(PointF point) {

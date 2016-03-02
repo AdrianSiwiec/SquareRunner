@@ -3,21 +3,17 @@ package adrians.framework;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.Typeface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
+import android.view.SurfaceView;
 
 import adrians.framework.util.FpsCounter;
 import adrians.framework.util.InputHandler;
 import adrians.framework.util.Painter;
-import adrians.framework.util.FpsCounter;
 import adrians.game.state.LoadState;
 import adrians.game.state.State;
+import adrians.game.state.StateManager;
 
 /**
  * Created by pierre on 06/02/16.
@@ -30,7 +26,6 @@ public class GameView extends SurfaceView implements Runnable{
 
     private Thread gameThread;
     private volatile boolean running = false;
-    private volatile State currentState;  //TODO State Stack instead of single variable
     private InputHandler inputHandler;
 
     private boolean showFps = true;
@@ -48,8 +43,8 @@ public class GameView extends SurfaceView implements Runnable{
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
                 initInput();
-                if (currentState == null) {
-                    setCurrentState(new LoadState());
+                if (StateManager.getCurrentState() == null) {
+                    StateManager.pushState(new LoadState());
                 }
                 initGame();
             }
@@ -69,15 +64,8 @@ public class GameView extends SurfaceView implements Runnable{
         super(context);
     }
 
-    public void setCurrentState(State newState) {
-        System.gc();
-        newState.init();
-        currentState = newState;
-        inputHandler.setCurrentState(currentState);
-    }
-
     public State getCurrentState() {
-        return currentState;
+        return StateManager.getCurrentState();
     }
 
     private void initInput() {
@@ -124,8 +112,8 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     private void updateAndRender(long delta, long nanoTime) {
-        currentState.update(delta/1e9f);
-        currentState.render(graphics);
+        StateManager.getCurrentState().update(delta / 1e9f);
+        StateManager.getCurrentState().render(graphics);
         if(showFps) {
             FpsCounter.update(nanoTime);
             FpsCounter.printFps(graphics);
@@ -144,13 +132,13 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     public void onResume() {
-        if(currentState!=null) {
-            currentState.onResume();
+        if(StateManager.getCurrentState()!=null) {
+            StateManager.getCurrentState().onResume();
         }
     }
     public void onPause() {
-        if(currentState!=null) {
-            currentState.onPause();
+        if(StateManager.getCurrentState()!=null) {
+            StateManager.getCurrentState().onPause();
         }
     }
 }

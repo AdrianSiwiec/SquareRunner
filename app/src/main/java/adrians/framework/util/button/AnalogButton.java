@@ -14,36 +14,36 @@ import adrians.game.model.PhysicalGameObject;
 public class AnalogButton extends PhysicalGameObject {
     protected Bitmap buttonBitmap;
     protected PointF val, buttonSize;
-    public AnalogButton(float x, float y, float width, float height, Bitmap bitmap,
-                              float buttonWidth, float buttonHeight, Bitmap buttonBitmap) {
-       super(x, y, width, height, bitmap);
-        buttonSize = new PointF(buttonWidth, buttonHeight);
+    public AnalogButton(PointF pos, PointF size, Bitmap bitmap,
+                              PointF buttonSize, Bitmap buttonBitmap) {
+       super(pos, size, bitmap);
+        this.buttonSize = buttonSize;
         val = new PointF(0, 0);
         this.buttonBitmap = buttonBitmap;
     }
 
     @Override
-    public synchronized void update(float delta) {
+    public void update(float delta) {
 
     }
 
     @Override
-    public synchronized void render(Painter g, Camera camera) {
+    public void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
-        camera.renderBitmap(posX + width*val.x, posY + height*val.y, buttonSize.x, buttonSize.y, buttonBitmap, g);
+        camera.renderBitmap(pos.x + size.x*val.x, pos.y + size.y*val.y, buttonSize.x, buttonSize.y, buttonBitmap, g);
     }
 
     @Override
-    public synchronized void onPointerMove() {
+    public void onPointerMove() {
         updateButton();
     }
     @Override
-    public synchronized void onPointerDown(TouchPointer ptr) {
+    public void onPointerDown(TouchPointer ptr) {
         super.onPointerDown(ptr);
         updateButton();
     }
 
-    public  synchronized void updateButton() {
+    public synchronized void updateButton() {
         if(pointers.size()>0) {
             val = pointers.getFirst().getCurRel();
             val.x = Math.min(1, val.x);
@@ -53,7 +53,7 @@ public class AnalogButton extends PhysicalGameObject {
         }
     }
 
-    public PointF getVal() {
+    public synchronized PointF getVal() {
         return val;
     }
 }

@@ -99,12 +99,12 @@ public class Camera {
         if (object == null) {
             return;
         }
-        tmpPoints[0] = object.getPosX();
-        tmpPoints[1] = object.getPosY();
+        tmpPoints[0] = object.getPos().x;
+        tmpPoints[1] = object.getPos().y;
 
         matrix.mapPoints(tmpPoints);
-        nW = matrix.mapRadius(object.getWidth());
-        nH = matrix.mapRadius(object.getHeight());
+        nW = matrix.mapRadius(object.getSize().x);
+        nH = matrix.mapRadius(object.getSize().y);
 
         g.drawImage(object.getBitmap(), tmpPoints[0] - nW, tmpPoints[1] - nH,
                 nW * 2, nH * 2, -rotationAngle + object.getRotationAngle());

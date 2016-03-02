@@ -3,6 +3,7 @@ package adrians.game.state;
 import android.view.MotionEvent;
 
 import java.util.HashMap;
+import java.util.Vector;
 
 import adrians.framework.util.Painter;
 import adrians.framework.GameMainActivity;
@@ -14,39 +15,36 @@ import adrians.game.model.PhysicalGameObject;
  * Created by pierre on 06/02/16.
  */
 public abstract class State {
-    protected PhysicalGameObject worldObjects[], fixedObjects[];
+    protected Vector<PhysicalGameObject> worldObjects, fixedObjects;
     protected Camera worldCamera, fixedCamera;
     protected HashMap<Integer, TouchPointer> pointers;
     protected HashMap<PhysicalGameObject, Integer> objectsPointedAt;
 
     public State() {
+        worldObjects = new Vector<>();
+        fixedObjects = new Vector<>();
         pointers = new HashMap<>();
         objectsPointedAt = new HashMap<>();
         worldCamera = new Camera(0, 0, 100, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
         fixedCamera = new Camera(0, 0, 100, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
     }
 
-    public void setCurrentState(State newState) {
-        GameMainActivity.sGame.setCurrentState(newState);
-    }
-    public abstract void init();
-
-    public synchronized void update(float delta) {
+    public void update(float delta) {
         fixedCamera.update(delta);
-        for(int i=0; i<fixedObjects.length; i++) {
-            fixedObjects[i].update(delta);
+        for(int i=0; i< fixedObjects.size(); i++) {
+            fixedObjects.get(i).update(delta);
         }
         worldCamera.update(delta);
-        for(int i=0; i< worldObjects.length; i++) {
-            worldObjects[i].update(delta);
+        for(int i=0; i< worldObjects.size(); i++) {
+            worldObjects.get(i).update(delta);
         }
     }
-    public synchronized void render(Painter g) {
-        for(int i=0; i< worldObjects.length; i++) {
-            worldObjects[i].render(g, worldCamera);
+    public void render(Painter g) {
+        for(int i=0; i< worldObjects.size(); i++) {
+            worldObjects.get(i).render(g, worldCamera);
         }
-        for(int i=0; i<fixedObjects.length; i++) {
-            fixedObjects[i].render(g, fixedCamera);
+        for(int i=0; i< fixedObjects.size(); i++) {
+            fixedObjects.get(i).render(g, fixedCamera);
         }
     }
     public synchronized boolean onTouch(MotionEvent e, int scaledX, int scaledY) {
@@ -60,17 +58,17 @@ public abstract class State {
 
             TouchPointer ptr = new TouchPointer(fixedCamera.getWorldCoords(e.getX(index), e.getY(index)), e.getPointerId(index), null);
             ptr.setIsWorld(false);
-            for(int i=fixedObjects.length-1; i>=0; i--) {
-                if(fixedObjects[i].isInside(ptr)) {
-                    ptr.setOriginObject(fixedObjects[i]);
+            for(int i= fixedObjects.size() -1; i>=0; i--) {
+                if(fixedObjects.get(i).isInside(ptr)) {
+                    ptr.setOriginObject(fixedObjects.get(i));
                     break;                }
             }
             if(ptr.getOriginObject()==null) {
                 ptr.setIsWorld(true);
                 ptr.setBeg(worldCamera.getWorldCoords(e.getX(index), e.getY(index)));
-                for (int i = worldObjects.length - 1; i >= 0; i--) {
-                    if (worldObjects[i].isInside(ptr)) {
-                        ptr.setOriginObject(worldObjects[i]);
+                for (int i = worldObjects.size() - 1; i >= 0; i--) {
+                    if (worldObjects.get(i).isInside(ptr)) {
+                        ptr.setOriginObject(worldObjects.get(i));
                         break;
                     }
                 }
