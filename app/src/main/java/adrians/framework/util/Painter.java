@@ -35,8 +35,9 @@ public class Painter {
     public synchronized void drawString(String str, int x, int y) {
         canvas.drawText(str, x, y, paint);
     }
-    public synchronized void fillRect(int x, int y, int width, int height) {
+    public synchronized void fillRect(int x, int y, int width, int height, int color) {
         dstRect.set(x, y, x+width, y+height);
+        paint.setColor(color);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(dstRect, paint);
     }
@@ -86,7 +87,15 @@ public class Painter {
         canvas.drawOval(dstRectF, paint);
     }
 
-    public synchronized void fillRect(float posX, float posY, float width, float height) {
-        fillRect((int) posX, (int)posY, (int) width, (int) height);
+    public synchronized void fillRect(float posX, float posY, float width, float height, int color) {
+        fillRect((int) posX, (int)posY, (int) width, (int) height, color);
+    }
+
+    public synchronized void fillRect(float posX, float posY, float width, float height, float rotationAngle, int color)
+    {
+        canvas.save();
+        canvas.rotate(rotationAngle, posX+width/2, posY+height/2);
+        fillRect(posX, posY, width, height, color);
+        canvas.restore();
     }
 }

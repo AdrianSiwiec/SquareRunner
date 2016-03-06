@@ -58,7 +58,7 @@ public abstract class State {
 
             TouchPointer ptr = new TouchPointer(fixedCamera.getWorldCoords(e.getX(index), e.getY(index)), e.getPointerId(index), null);
             ptr.setIsWorld(false);
-            for(int i= fixedObjects.size() -1; i>=0; i--) {
+            for(int i= fixedObjects.size()-1; i>=0; i--) {
                 if(fixedObjects.get(i).isInside(ptr)) {
                     ptr.setOriginObject(fixedObjects.get(i));
                     break;                }
@@ -66,7 +66,7 @@ public abstract class State {
             if(ptr.getOriginObject()==null) {
                 ptr.setIsWorld(true);
                 ptr.setBeg(worldCamera.getWorldCoords(e.getX(index), e.getY(index)));
-                for (int i = worldObjects.size() - 1; i >= 0; i--) {
+                for (int i = worldObjects.size()-1; i >= 0; i--) {
                     if (worldObjects.get(i).isInside(ptr)) {
                         ptr.setOriginObject(worldObjects.get(i));
                         break;
@@ -90,10 +90,10 @@ public abstract class State {
                 }
                 if(pointers.get(e.getPointerId(i)).isWorld()) {
                     pointers.get(e.getPointerId(i)).update(worldCamera.getWorldCoords(e.getX(i), e.getY(i)));
-                    pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
+                    //pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
                 } else {
                     pointers.get(e.getPointerId(i)).update(fixedCamera.getWorldCoords(e.getX(i), e.getY(i)));
-                    pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
+                    //pointers.get(e.getPointerId(i)).getOriginObject().updatePointer(pointers.get(e.getPointerId(i)));
                 }
             }
             for(PhysicalGameObject o: objectsPointedAt.keySet()) {

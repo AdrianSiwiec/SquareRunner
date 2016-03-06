@@ -106,8 +106,13 @@ public class Camera {
         nW = matrix.mapRadius(object.getSize().x);
         nH = matrix.mapRadius(object.getSize().y);
 
-        g.drawImage(object.getBitmap(), tmpPoints[0] - nW, tmpPoints[1] - nH,
-                nW * 2, nH * 2, -rotationAngle + object.getRotationAngle());
+        if(object.getBitmap()!=null) {
+            g.drawImage(object.getBitmap(), tmpPoints[0] - nW, tmpPoints[1] - nH,
+                    nW * 2, nH * 2, -rotationAngle + object.getRotationAngle());
+        } else {
+            g.fillRect(tmpPoints[0]-nW, tmpPoints[1]-nH, nW*2, nH*2,
+                    -rotationAngle+object.getRotationAngle(), object.getColor());
+        }
 
     }
 

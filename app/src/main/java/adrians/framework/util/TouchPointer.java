@@ -8,17 +8,18 @@ import adrians.game.model.PhysicalGameObject;
  * Created by pierre on 13/02/16.
  */
 public class TouchPointer {
-    private PointF beg, cur, begRel, curRel;
+    private PointF cur, begRel, curRel;
+    private PointF beg;
     private PhysicalGameObject originObject;
     private int id;
 
     boolean isWorld;
 
-    public  TouchPointer(PointF pt, int id, PhysicalGameObject originObject) {
+    public TouchPointer(PointF pt, int id, PhysicalGameObject originObject) {
         this.originObject = originObject;
         this.id = id;
-        cur = pt;
-        beg = pt;
+        cur = new PointF(pt.x, pt.y);
+        beg = new PointF(pt.x, pt.y);
         begRel = new PointF(0, 0);
         curRel = new PointF(0, 0);
         if(originObject != null) {
@@ -27,12 +28,12 @@ public class TouchPointer {
         }
     }
 
-    private void updateCurRel() {
+    public void updateCurRel() {
         curRel.x = (cur.x - originObject.getPos().x) / originObject.getSize().x;
         curRel.y = (cur.y - originObject.getPos().y) / originObject.getSize().y;
     }
 
-    private void updateBegRel() {
+    public void updateBegRel() {
         begRel.x = (beg.x - originObject.getPos().x) / originObject.getSize().x;
         begRel.y = (beg.y - originObject.getPos().y) / originObject.getSize().y;
     }
@@ -48,16 +49,16 @@ public class TouchPointer {
         return beg;
     }
 
-    public void setBeg(PointF beg) {
-        this.beg = beg;
-    }
-
     public PointF getCur() {
         return cur;
     }
 
     public void setCur(PointF cur) {
         this.cur = cur;
+    }
+
+    public void setBeg(PointF beg) {
+        this.beg = beg;
     }
 
     public PointF getBegRel() {

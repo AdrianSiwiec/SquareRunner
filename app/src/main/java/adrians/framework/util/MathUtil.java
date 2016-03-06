@@ -1,5 +1,7 @@
 package adrians.framework.util;
 
+import android.graphics.PointF;
+
 import java.util.Random;
 
 /**
@@ -15,5 +17,14 @@ public class MathUtil {
     }
     public static boolean isBetween(float x, float beg, float end) {
         return (x >= beg && x <= end);
+    }
+
+    public static float distance(PointF a, PointF b) {
+        return (float) Math.sqrt( (a.x-b.x)*(a.x-b.x) + (a.y-b.y)*(a.y-b.y) );
+    }
+
+    public static PointF getPointBetween(PointF p, PointF q, float ratio) {
+        return new PointF(p.x + (q.x-p.x)*ratio, p.y+(q.y-p.y)*ratio); //TODO make faster
+
     }
 }

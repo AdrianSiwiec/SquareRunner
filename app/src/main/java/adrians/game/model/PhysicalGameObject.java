@@ -2,6 +2,7 @@ package adrians.game.model;
 
 import android.graphics.Bitmap;
 import android.graphics.PointF;
+import android.graphics.RectF;
 
 import java.util.LinkedList;
 
@@ -15,26 +16,36 @@ import adrians.game.camera.Camera;
 public abstract class PhysicalGameObject extends GameObject {
     protected PointF pos, vel, size;
     protected float rotationAngle;
+    protected RectF rectangle;
     protected Bitmap bitmap;
-    protected LinkedList<TouchPointer> pointers;
+    protected int color;
+    protected volatile LinkedList<TouchPointer> pointers;
     public PhysicalGameObject(PointF pos, PointF size) {
         this.pos = pos;
         this.size = size;
+        rectangle = new RectF();
+        updateRectangle();
         vel = new PointF(0, 0);
         bitmap = null;
         pointers = new LinkedList<>();
+        this.rotationAngle = 0;
     }
 
-    public void update(float delta){}
+
+
+    public void update(float delta){updateRectangle();}
 
     public synchronized void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
     }
 
+    public PhysicalGameObject(PointF pos, PointF size, int color) {
+        this(pos, size);
+        this.color = color;
+    }
     public PhysicalGameObject(PointF pos, PointF size, Bitmap bitmap) {
         this(pos, size);
         this.bitmap = bitmap;
-        this.rotationAngle = 0;
     }
 
     public PhysicalGameObject(PointF pos, PointF size, float rotationAngle, Bitmap bitmap) {
@@ -61,12 +72,14 @@ public abstract class PhysicalGameObject extends GameObject {
         }
     }
 
-    public void onPointerMove() {
-
-    }
+    public void onPointerMove() {}
 
     public synchronized void onPointerUp(TouchPointer ptr) {
         pointers.remove(ptr);
+    }
+
+    protected void updateRectangle() {
+        rectangle.set(pos.x - size.x, pos.y - size.y, pos.x + size.x, pos.y + size.y);
     }
 
     public synchronized Bitmap getBitmap() {
@@ -103,6 +116,14 @@ public abstract class PhysicalGameObject extends GameObject {
     }
 
     public void setSize(PointF size) {
+
         this.size = size;
+    }
+    public RectF getRectangle() {
+        return rectangle;
+    }
+
+    public int getColor() {
+        return color;
     }
 }
