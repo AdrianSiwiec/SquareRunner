@@ -17,6 +17,12 @@ public class Camera {
     private float[] tmpPoints;
     private float nW, nH;
     private PointF tmpPoint = new PointF();
+    private PhysicalGameObject followedObject;
+    private float ropeLength, followSpeed;
+    public enum Mode {
+        FIXED, FOLLOW, FOLLOW_LOOSELY
+    }
+    Mode mode = Mode.FIXED;
     public Camera(float posX, float posY, float width, int screenWidth, int screenHeight) {
         this.posX = posX;
         this.posY = posY;
@@ -38,7 +44,39 @@ public class Camera {
         calculateMatrix();
     }
 
+    public void setModeFollow(PhysicalGameObject obj) {
+        followedObject = obj;
+        posX = followedObject.getPos().x;
+        posY = followedObject.getPos().y;
+        calculateMatrix();
+        mode = Mode.FOLLOW;
+    }
+
+    public void setModeFollowLoosely(PhysicalGameObject obj, float ropeLength, float followSpeed) {
+        followedObject = obj;
+        posX = followedObject.getPos().x;
+        posY = followedObject.getPos().y;
+        this.ropeLength = ropeLength;
+        this.followSpeed = followSpeed;
+        calculateMatrix();
+        mode = Mode.FOLLOW_LOOSELY;
+    }
+
+
     public void update(float delta) {
+        switch (mode) {
+            case FIXED:
+                break;
+            case FOLLOW:
+                posX = followedObject.getPos().x;
+                posY = followedObject.getPos().y;
+                calculateMatrix();
+                break;
+            case FOLLOW_LOOSELY:
+                    posX += (followedObject.getPos().x - posX)*delta*followSpeed;
+                    posY += (followedObject.getPos().y - posY)*delta*followSpeed;
+                break;
+        }
     }
 
     public synchronized PointF getWorldCoords(float x, float y) {

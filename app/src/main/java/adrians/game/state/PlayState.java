@@ -27,7 +27,7 @@ public class PlayState extends State{
     PlayerSquare player;
     Vector<PhysicalRectangle> rectangles;
     TouchListener touchListener;
-    private float minimumCameraWidth = 70, maximumCameraWidth = 400;
+    private float minimumCameraWidth = 70, maximumCameraWidth = 800;
     public PlayState() {
         fixedObjects.addElement(new CenteringButton(new PointF(-78, 40), new PointF(20, 20),
                 Assets.stickBitmap, new PointF(13, 13), Assets.stickButtonBitmap, 2));
@@ -42,9 +42,10 @@ public class PlayState extends State{
         touchListener = new TouchListener(new PointF(0, 0), new PointF(100, 100));
         fixedObjects.add(0, touchListener);
         player = new PlayerSquare(new PointF(0, -90), new PointF(20, 20), Color.BLUE, touchListener);
+        worldCamera.setModeFollowLoosely(player, 40, 1);
         worldObjects.addElement(player);
         rectangles = new Vector<>();
-        rectangles.addElement(new PhysicalRectangle(new PointF(0, 0), new PointF(100, 20), Color.RED));
+        rectangles.addElement(new PhysicalRectangle(new PointF(0, 0), new PointF(10000, 20), Color.RED));
         rectangles.addElement(new PhysicalRectangle(new PointF(100, 0), new PointF(20, 100), Color.GREEN));
     }
 
@@ -76,6 +77,8 @@ public class PlayState extends State{
         for(PhysicalRectangle rectangle: rectangles) {
             rectangle.update(delta);
         }
+
+        worldCamera.update(delta);
 
     }
 

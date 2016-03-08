@@ -11,7 +11,7 @@ import adrians.game.camera.Camera;
  */
 public class TouchListener extends PhysicalGameObject{
     PointF touchVel, usedVel;
-    float scale = 1e2f;
+    float scale = 1e3f;
     public TouchListener(PointF pos, PointF size) {
         super(pos, size);
         touchVel = new PointF();
@@ -20,12 +20,10 @@ public class TouchListener extends PhysicalGameObject{
 
 
     @Override
-    public synchronized void render(Painter g, Camera camera) { return;}
+    public synchronized void render(Painter g, Camera camera) {}
 
     @Override
-    public synchronized void update(float delta){
-
-    }
+    public synchronized void update(float delta){}
 
     @Override
     public synchronized void onPointerDown(TouchPointer ptr) {

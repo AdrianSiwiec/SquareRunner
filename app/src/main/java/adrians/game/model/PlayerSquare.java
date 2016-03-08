@@ -1,6 +1,7 @@
 package adrians.game.model;
 
 import android.graphics.PointF;
+import android.util.Log;
 
 import java.util.Vector;
 
@@ -15,15 +16,15 @@ public class PlayerSquare extends PhysicalGameObject{
     }
 
 
-    public void onObstacleTouch(PhysicalRectangle obj) {
-        if(!obj.isTouching(this)) {
-            return;
-        }
-        if(touchesRight(obj) || touchesLeft(obj) || touchesDown(obj) || touchesUp(obj)) {
-            pos = obj.closestPossible(this);
-        }
-        updateRectangle();
-    }
+//    public void onObstacleTouch(PhysicalRectangle obj) {
+//        if(!obj.isTouching(this)) {
+//            return;
+//        }
+//        if(touchesRight(obj) || touchesLeft(obj) || touchesDown(obj) || touchesUp(obj)) {
+//            pos = obj.closestPossible(this);
+//        }
+//        updateRectangle();
+//    }
 
     private boolean touchesRight(PhysicalRectangle obj) {
         return rectangle.intersects(obj.pos.x - obj.size.x, obj.pos.y - obj.size.y, obj.pos.x - obj.size.x, obj.pos.x + obj.size.y);
@@ -41,21 +42,34 @@ public class PlayerSquare extends PhysicalGameObject{
         return rectangle.intersect(obj.pos.x-obj.size.x, obj.pos.y+obj.size.y, obj.pos.x+obj.size.x, obj.pos.y+obj.size.y);
     }
 
+    float maximumDelta = 0.08f;
     public synchronized void update(float delta, Vector<PhysicalRectangle> rectangles) {
-        PointF oldPos=new PointF(pos.x, pos.y);
-        vel.y+=100*delta;
+        if(delta > maximumDelta) {
+            Log.d("PlayerUpdate", "exceeded maximum delta:" + delta);
+            update(delta - maximumDelta, rectangles);
+            delta-=maximumDelta;
+        }
+        vel.y+=1000*delta;
         vel.x+=touchListener.getWantedVelX()*delta;
         vel.y+=touchListener.getWantedVelY()*delta;
         if(touchListener.getPointersSize()==0) {
-            vel.x *= 0.9;
+            vel.x *= 0.95;
         }
         pos.y+=vel.y*delta;
         pos.x+=vel.x*delta;
 
-        for(PhysicalRectangle rectangle: rectangles) {
+        for(PhysicalRectangle rectangle: rectangles) { //todo faster?
             if(rectangle.isTouching(this)) {
-                pos = rectangle.closestPossible(this);
-                vel.y = 0;
+                int index = rectangle.closestPossible(this);
+                if(index < 2) {
+                    vel.x = 0;
+                } else {
+                    vel.y = 0;
+                }
+                pos = rectangle.getClosestPossible(this);
+                if(pos == null) {
+                    System.exit(4);
+                }
             }
         }
 
@@ -63,17 +77,17 @@ public class PlayerSquare extends PhysicalGameObject{
 
     }
 
-    private synchronized boolean collides(PointF newPos, Vector<PhysicalRectangle> rectangles) {
-        PointF oldPos = new PointF(pos.x, pos.y); //UGLY todo make better
-        pos = newPos;
-        updateRectangle();
-        for(PhysicalRectangle rectangle: rectangles) {
-            if(rectangle.isTouching(this)) {
-                pos = oldPos;
-                return true;
-            }
-        }
-        pos = oldPos;
-        return false;
-    }
+//    private synchronized boolean collides(PointF newPos, Vector<PhysicalRectangle> rectangles) {
+//        PointF oldPos = new PointF(pos.x, pos.y); //UGLY todo make better
+//        pos = newPos;
+//        updateRectangle();
+//        for(PhysicalRectangle rectangle: rectangles) {
+//            if(rectangle.isTouching(this)) {
+//                pos = oldPos;
+//                return true;
+//            }
+//        }
+//        pos = oldPos;
+//        return false;
+//    }
 }
