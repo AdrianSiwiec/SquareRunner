@@ -1,9 +1,11 @@
-package adrians.game.model;
+package adrians.game.model.gameObject;
 
 import android.graphics.PointF;
 import android.util.Log;
 
 import java.util.Vector;
+
+import adrians.game.model.TouchListener;
 
 /**
  * Created by pierre on 02/03/16.
@@ -42,14 +44,14 @@ public class PlayerSquare extends PhysicalGameObject{
         return rectangle.intersect(obj.pos.x-obj.size.x, obj.pos.y+obj.size.y, obj.pos.x+obj.size.x, obj.pos.y+obj.size.y);
     }
 
-    float maximumDelta = 0.08f;
+    float maximumDelta = 0.05f;
     public synchronized void update(float delta, Vector<PhysicalRectangle> rectangles) {
         if(delta > maximumDelta) {
             Log.d("PlayerUpdate", "exceeded maximum delta:" + delta);
             update(delta - maximumDelta, rectangles);
             delta-=maximumDelta;
         }
-        vel.y+=1000*delta;
+        vel.y+=400*delta;
         vel.x+=touchListener.getWantedVelX()*delta;
         vel.y+=touchListener.getWantedVelY()*delta;
         if(touchListener.getPointersSize()==0) {

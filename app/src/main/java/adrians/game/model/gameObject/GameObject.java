@@ -1,4 +1,4 @@
-package adrians.game.model;
+package adrians.game.model.gameObject;
 
 import adrians.framework.util.Painter;
 import adrians.game.camera.Camera;

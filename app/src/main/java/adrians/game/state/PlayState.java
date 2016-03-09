@@ -3,8 +3,6 @@ package adrians.game.state;
 import android.graphics.Color;
 import android.graphics.PointF;
 
-import java.util.Vector;
-
 import adrians.framework.Assets;
 import adrians.framework.GameMainActivity;
 import adrians.framework.util.Painter;
@@ -12,10 +10,10 @@ import adrians.framework.util.button.CenteringButton;
 import adrians.framework.util.button.RotationButton;
 import adrians.framework.util.button.VerticalButton;
 import adrians.game.camera.Camera;
-import adrians.game.model.PhysicalGameObject;
-import adrians.game.model.PhysicalRectangle;
-import adrians.game.model.PlayerSquare;
 import adrians.game.model.TouchListener;
+import adrians.game.model.gameObject.PlayerSquare;
+import adrians.game.model.level.Level;
+import adrians.game.model.level.LevelGenerator;
 
 /**
  * Created by pierre on 10/02/16.
@@ -25,7 +23,7 @@ public class PlayState extends State{
     VerticalButton zoomButton;
     RotationButton rotationButton;
     PlayerSquare player;
-    Vector<PhysicalRectangle> rectangles;
+    Level currentLevel;
     TouchListener touchListener;
     private float minimumCameraWidth = 70, maximumCameraWidth = 800;
     public PlayState() {
@@ -38,23 +36,24 @@ public class PlayState extends State{
         movementButton = (CenteringButton) fixedObjects.elementAt(0);
         zoomButton = (VerticalButton) fixedObjects.elementAt(1);
         rotationButton = (RotationButton) fixedObjects.elementAt(2);
+
         worldCamera = new Camera(0, -40, 200, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
-        touchListener = new TouchListener(new PointF(0, 0), new PointF(100, 100));
+
+        touchListener = new TouchListener(new PointF(0, 0), new PointF(30, 30));
         fixedObjects.add(0, touchListener);
+
         player = new PlayerSquare(new PointF(0, -90), new PointF(20, 20), Color.BLUE, touchListener);
-        worldCamera.setModeFollowLoosely(player, 40, 1);
-        worldObjects.addElement(player);
-        rectangles = new Vector<>();
-        rectangles.addElement(new PhysicalRectangle(new PointF(0, 0), new PointF(10000, 20), Color.RED));
-        rectangles.addElement(new PhysicalRectangle(new PointF(100, 0), new PointF(20, 100), Color.GREEN));
+
+        worldCamera.setModeFollowLoosely(player, 40, 3);
+
+        currentLevel = LevelGenerator.generateLevel(1);
     }
 
     @Override
     public void render(Painter g) {
         g.fillRect(0, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT, Color.WHITE);
-        for(PhysicalRectangle rectangle: rectangles) {
-            rectangle.render(g, worldCamera);
-        }
+        currentLevel.render(g, worldCamera);
+        player.render(g, worldCamera);
         super.render(g);
     }
 
@@ -67,18 +66,9 @@ public class PlayState extends State{
             worldCamera.setRotationAngle((float) (-Math.atan2(rotationButton.getVal().x, -rotationButton.getVal().y) * 360 / Math.PI / 2));
         }
 
-        for(PhysicalGameObject obj : fixedObjects){
-            obj.update(delta);
-        }
-
-
-        player.update(delta, rectangles);
-
-        for(PhysicalRectangle rectangle: rectangles) {
-            rectangle.update(delta);
-        }
-
-        worldCamera.update(delta);
+        player.update(delta, currentLevel.rectangles);
+        currentLevel.update(delta);
+        super.update(delta);
 
     }
 

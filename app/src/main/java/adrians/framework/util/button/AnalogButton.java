@@ -6,7 +6,7 @@ import android.graphics.PointF;
 import adrians.framework.util.Painter;
 import adrians.framework.util.TouchPointer;
 import adrians.game.camera.Camera;
-import adrians.game.model.PhysicalGameObject;
+import adrians.game.model.gameObject.PhysicalGameObject;
 
 /**
  * Created by pierre on 15/02/16.

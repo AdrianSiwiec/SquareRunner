@@ -1,4 +1,4 @@
-package adrians.game.model;
+package adrians.game.model.gameObject;
 
 import android.graphics.PointF;
 

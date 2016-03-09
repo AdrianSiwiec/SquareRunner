@@ -2,7 +2,7 @@ package adrians.framework.util;
 
 import android.graphics.PointF;
 
-import adrians.game.model.PhysicalGameObject;
+import adrians.game.model.gameObject.PhysicalGameObject;
 
 /**
  * Created by pierre on 13/02/16.

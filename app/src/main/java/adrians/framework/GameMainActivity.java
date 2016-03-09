@@ -10,8 +10,6 @@ import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
 
-import adrians.game.model.GameObject;
-
 /**
  * Created by pierre on 06/02/16.
  */

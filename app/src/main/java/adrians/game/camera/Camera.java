@@ -5,7 +5,7 @@ import android.graphics.Matrix;
 import android.graphics.PointF;
 
 import adrians.framework.util.Painter;
-import adrians.game.model.PhysicalGameObject;
+import adrians.game.model.gameObject.PhysicalGameObject;
 
 /**
  * Created by pierre on 10/02/16.

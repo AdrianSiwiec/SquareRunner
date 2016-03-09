@@ -112,6 +112,7 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     private void updateAndRender(long delta, long nanoTime) {
+        delta = Math.min(delta, (long ) (0.2f*1e9) );
         StateManager.getCurrentState().update(delta / 1e9f);
         StateManager.getCurrentState().render(graphics);
         if(showFps) {
