@@ -11,11 +11,14 @@ import adrians.game.model.gameObject.PhysicalGameObject;
 /**
  * Created by pierre on 15/02/16.
  */
-public class AnalogButton extends PhysicalGameObject {
+public class Button extends PhysicalGameObject {
     protected Bitmap buttonBitmap;
     protected PointF val, buttonSize;
-    public AnalogButton(PointF pos, PointF size, Bitmap bitmap,
-                              PointF buttonSize, Bitmap buttonBitmap) {
+    public Button(PointF pos, PointF size, Bitmap bitmap) {
+        super(pos, size, bitmap);
+    }
+    public Button(PointF pos, PointF size, Bitmap bitmap,
+                  PointF buttonSize, Bitmap buttonBitmap) {
        super(pos, size, bitmap);
         this.buttonSize = buttonSize;
         val = new PointF(0, 0);

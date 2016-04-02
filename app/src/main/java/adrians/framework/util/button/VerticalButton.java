@@ -6,7 +6,7 @@ import android.graphics.PointF;
 /**
  * Created by pierre on 15/02/16.
  */
-public class VerticalButton extends AnalogButton {
+public class VerticalButton extends Button {
     public VerticalButton(PointF pos, PointF size, Bitmap bitmap, PointF buttonSize, Bitmap buttonBitmap) {
         super(pos, size, bitmap, buttonSize, buttonBitmap);
     }

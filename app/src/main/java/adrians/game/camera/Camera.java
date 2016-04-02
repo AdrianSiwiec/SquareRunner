@@ -62,6 +62,10 @@ public class Camera {
         mode = Mode.FOLLOW_LOOSELY;
     }
 
+    public void setModeFixed() {
+        mode = Mode.FIXED;
+    }
+
 
     public void update(float delta) {
         switch (mode) {

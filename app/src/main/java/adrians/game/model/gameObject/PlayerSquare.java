@@ -51,7 +51,7 @@ public class PlayerSquare extends PhysicalGameObject{
             update(delta - maximumDelta, rectangles);
             delta-=maximumDelta;
         }
-        vel.y+=400*delta;
+        vel.y+=100*delta;
         vel.x+=touchListener.getWantedVelX()*delta;
         vel.y+=touchListener.getWantedVelY()*delta;
         if(touchListener.getPointersSize()==0) {
@@ -69,9 +69,9 @@ public class PlayerSquare extends PhysicalGameObject{
                     vel.y = 0;
                 }
                 pos = rectangle.getClosestPossible(this);
-                if(pos == null) {
-                    System.exit(4);
-                }
+//                if(pos == null) {
+//                    System.exit(4);
+//                }
             }
         }
 

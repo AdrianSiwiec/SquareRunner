@@ -1,5 +1,6 @@
 package adrians.game.state;
 
+import android.graphics.Color;
 import android.view.MotionEvent;
 
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public abstract class State {
         }
     }
     public void render(Painter g) {
+        g.fillRect(0, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT, Color.WHITE);
         for(int i=0; i< worldObjects.size(); i++) {
             worldObjects.get(i).render(g, worldCamera);
         }

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="10" tileheight="10">
+ <objectgroup color="#a40002" name="Walls">
+  <object x="10" y="180" width="170" height="20"/>
+  <object x="20" y="120" width="20" height="50"/>
+  <object x="130" y="100" width="30" height="80"/>
+ </objectgroup>
+ <objectgroup color="#0e00a4" name="Player">
+  <object x="50" y="160" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#ffffff" name="Camera">
+  <object x="0" y="90" width="190" height="100"/>
+ </objectgroup>
+</map>

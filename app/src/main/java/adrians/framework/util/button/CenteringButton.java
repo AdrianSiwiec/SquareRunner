@@ -10,7 +10,7 @@ import adrians.game.camera.Camera;
 /**
  * Created by pierre on 15/02/16.
  */
-public class CenteringButton extends AnalogButton{
+public class CenteringButton extends Button {
     public long visibleNanos, vanishingNanos, sinceLastActionNanos;
     public int alpha;
     public CenteringButton(PointF pos, PointF size, Bitmap bitmap, PointF buttonSize,

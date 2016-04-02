@@ -17,12 +17,10 @@ public class StateManager {
     }
     public synchronized static void popState() {
         stateStack.pop();
-        System.gc();
     }
     public synchronized static void changeState(State state) {
         if(!stateStack.isEmpty()) {
             stateStack.pop();
-            System.gc();
             stateStack.push(state);
         }
     }

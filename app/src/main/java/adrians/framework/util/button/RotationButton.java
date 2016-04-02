@@ -6,7 +6,7 @@ import android.graphics.PointF;
 /**
  * Created by pierre on 15/02/16.
  */
-public class RotationButton extends AnalogButton {
+public class RotationButton extends Button {
     float centeringDistance = 0.2f;
     public RotationButton(PointF pos, PointF size, Bitmap bitmap, PointF buttonSize, Bitmap buttonBitmap) {
         super(pos, size, bitmap, buttonSize, buttonBitmap);

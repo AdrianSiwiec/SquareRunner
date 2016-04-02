@@ -15,7 +15,7 @@ public class LoadState extends State {
 
     @Override
     public void update(float delta) {
-        StateManager.changeState(new PlayState());
+        StateManager.changeState(new MenuState());
     }
 
     @Override

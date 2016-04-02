@@ -13,7 +13,7 @@ import adrians.game.camera.Camera;
 /**
  * Created by pierre on 10/02/16.
  */
-public abstract class PhysicalGameObject extends GameObject {
+public class PhysicalGameObject extends GameObject {
     protected PointF pos, vel, size;
     protected float rotationAngle;
     protected RectF rectangle;

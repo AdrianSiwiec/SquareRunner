@@ -72,12 +72,12 @@ public class GameMainActivity extends Activity {
         sGame.onPause();
     }
 
-    public static void toggleSound() {
-        playSound ^= true;
-        if(playSound) {
-            Assets.resumeMusic();
-        } else {
-            Assets.pauseMusic();
-        }
-    }
+//    public static void toggleSound() {
+//        playSound ^= true;
+//        if(playSound) {
+//            Assets.resumeMusic();
+//        } else {
+//            Assets.pauseMusic();
+//        }
+//    }
 }

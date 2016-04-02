@@ -12,7 +12,7 @@ import adrians.game.model.gameObject.PhysicalGameObject;
  */
 public class TouchListener extends PhysicalGameObject {
     PointF touchVel, usedVel;
-    float scale = 2e4f;
+    float scale = 6e3f;
     public TouchListener(PointF pos, PointF size) {
         super(pos, size);
         touchVel = new PointF();
