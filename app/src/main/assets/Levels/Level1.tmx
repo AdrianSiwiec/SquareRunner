@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="10" tileheight="10">
- <objectgroup color="#a40002" name="Walls">
-  <object x="10" y="180" width="170" height="20"/>
-  <object x="20" y="120" width="20" height="50"/>
-  <object x="130" y="100" width="30" height="80"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="80" tilewidth="10" tileheight="10">
+ <objectgroup color="#3c1100" name="Walls">
+  <object x="0" y="760" width="330" height="40"/>
+  <object x="0" y="670" width="40" height="90"/>
+  <object x="40" y="700" width="10" height="10"/>
+  <object x="50" y="700" width="10" height="10"/>
+  <object x="50" y="710" width="10" height="10"/>
+  <object x="50" y="730" width="10" height="10"/>
+  <object x="40" y="740" width="20" height="10"/>
+  <object x="10" y="630" width="120" height="40"/>
+  <object x="200" y="690" width="70" height="70"/>
+  <object x="110" y="670" width="20" height="40"/>
+  <object x="200" y="650" width="100" height="10"/>
+  <object x="120" y="550" width="10" height="60"/>
+  <object x="200" y="570" width="100" height="10"/>
+  <object x="20" y="550" width="100" height="10"/>
+  <object x="40" y="510" width="40" height="10"/>
  </objectgroup>
- <objectgroup color="#0e00a4" name="Player">
-  <object x="50" y="160" width="10" height="10"/>
+ <objectgroup color="#732405" name="Player">
+  <object x="80" y="740" width="10" height="10"/>
  </objectgroup>
- <objectgroup color="#ffffff" name="Camera">
-  <object x="0" y="90" width="190" height="100"/>
+ <objectgroup color="#aa5939" name="Background">
+  <object x="30" y="410" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup name="Camera">
+  <object x="0" y="640" width="270" height="130"/>
  </objectgroup>
 </map>

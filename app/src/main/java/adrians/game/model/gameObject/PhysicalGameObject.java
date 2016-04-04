@@ -35,7 +35,7 @@ public class PhysicalGameObject extends GameObject {
 
     public void update(float delta){updateRectangle();}
 
-    public synchronized void render(Painter g, Camera camera) {
+    public void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
     }
 
@@ -54,27 +54,27 @@ public class PhysicalGameObject extends GameObject {
         this.rotationAngle = rotationAngle;
     }
 
-    public synchronized boolean isInside(TouchPointer ptr) {
+    public boolean isInside(TouchPointer ptr) {
         return(ptr.getBeg().x >= pos.x - size.x && ptr.getBeg().x <= pos.x + size.x &&
                 ptr.getBeg().y >= pos.y - size.y && ptr.getBeg().y <=pos.y + size.y);
     }
 
-    public synchronized void onPointerDown(TouchPointer ptr) {
+    public void onPointerDown(TouchPointer ptr) {
         pointers.add(ptr);
     }
 
-    public synchronized void updatePointer(TouchPointer ptr) {
-        for(int i=0; i<pointers.size(); i++) {
-            if(pointers.get(i).getId() == ptr.getId()) {
-                pointers.set(i, ptr);
-                break;
-            }
-        }
-    }
+//    public synchronized void updatePointer(TouchPointer ptr) {
+//        for(int i=0; i<pointers.size(); i++) {
+//            if(pointers.get(i).getId() == ptr.getId()) {
+//                pointers.set(i, ptr);
+//                break;
+//            }
+//        }
+//    }
 
     public void onPointerMove() {}
 
-    public synchronized void onPointerUp(TouchPointer ptr) {
+    public void onPointerUp(TouchPointer ptr) {
         pointers.remove(ptr);
     }
 
@@ -82,7 +82,7 @@ public class PhysicalGameObject extends GameObject {
         rectangle.set(pos.x - size.x, pos.y - size.y, pos.x + size.x, pos.y + size.y);
     }
 
-    public synchronized Bitmap getBitmap() {
+    public Bitmap getBitmap() {
         return bitmap;
     }
 

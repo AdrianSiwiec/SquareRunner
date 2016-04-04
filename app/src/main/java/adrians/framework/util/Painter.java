@@ -6,6 +6,9 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.text.DynamicLayout;
+
+import adrians.framework.GameMainActivity;
 
 /**
  * Created by pierre on 06/02/16.
@@ -41,12 +44,21 @@ public class Painter {
         paint.setStyle(Paint.Style.FILL);
         canvas.drawRect(dstRect, paint);
     }
+    public synchronized void fillRect(float x, float y, float width, float height, int color) {
+        dstRectF.set(x, y, width+x, height+y);
+        paint.setColor(color);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(dstRectF, paint);
+    }
+    public synchronized void fillBackground(int color) {
+        fillRect(0, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT, color);
+    }
     public synchronized void drawImage(Bitmap bitmap, int x, int y) {
         canvas.drawBitmap(bitmap, x, y, paint);
     }
     public synchronized void drawImage(Bitmap bitmap, int x, int y, int width, int height) {
         srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        dstRect.set(x, y, x+width, y+height);
+        dstRect.set(x, y, x + width, y + height);
         canvas.drawBitmap(bitmap, srcRect, dstRect, paint);
     }
     public synchronized void drawImage(Bitmap bitmap, int x, int y, int width, int height, float rotationAngle) {
@@ -62,7 +74,7 @@ public class Painter {
     }
     public synchronized void drawImage(Bitmap bitmap, float x, float y, float width, float height) {
         srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        dstRectF.set(x, y, x+width, y+height);
+        dstRectF.set(x, y, x + width, y + height);
         canvas.drawBitmap(bitmap, srcRect, dstRectF, paint);
     }
     public synchronized void drawImage(Bitmap bitmap, float x, float y, float width, float height, float rotationAngle) {
@@ -87,15 +99,20 @@ public class Painter {
         canvas.drawOval(dstRectF, paint);
     }
 
-    public synchronized void fillRect(float posX, float posY, float width, float height, int color) {
-        fillRect((int) posX, (int)posY, (int) width, (int) height, color);
-    }
+
 
     public synchronized void fillRect(float posX, float posY, float width, float height, float rotationAngle, int color)
     {
         canvas.save();
-        canvas.rotate(rotationAngle, posX+width/2, posY+height/2);
+        canvas.rotate(rotationAngle, posX + width / 2, posY + height / 2);
         fillRect(posX, posY, width, height, color);
+        canvas.restore();
+    }
+
+    public synchronized void drawTextLayout(float x, float y, DynamicLayout layout) {
+        canvas.save();
+        canvas.translate(x, y);
+        layout.draw(canvas);
         canvas.restore();
     }
 }

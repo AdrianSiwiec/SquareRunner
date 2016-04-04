@@ -8,6 +8,9 @@ import java.util.Random;
  * Created by pierre on 07/02/16.
  */
 public class MathUtil {
+    public enum Directions {
+        UP, DOWN, LEFT, RIGHT
+    }
     private static Random rand = new Random();
     public static int getRandIntBetween(int lowerBound, int upperBound) {
         return rand.nextInt(upperBound-lowerBound) + lowerBound;

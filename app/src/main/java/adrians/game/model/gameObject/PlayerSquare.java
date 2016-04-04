@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.Vector;
 
+import adrians.framework.util.MathUtil.Directions;
 import adrians.game.model.TouchListener;
 
 /**
@@ -18,32 +19,6 @@ public class PlayerSquare extends PhysicalGameObject{
     }
 
 
-//    public void onObstacleTouch(PhysicalRectangle obj) {
-//        if(!obj.isTouching(this)) {
-//            return;
-//        }
-//        if(touchesRight(obj) || touchesLeft(obj) || touchesDown(obj) || touchesUp(obj)) {
-//            pos = obj.closestPossible(this);
-//        }
-//        updateRectangle();
-//    }
-
-    private boolean touchesRight(PhysicalRectangle obj) {
-        return rectangle.intersects(obj.pos.x - obj.size.x, obj.pos.y - obj.size.y, obj.pos.x - obj.size.x, obj.pos.x + obj.size.y);
-    }
-
-    private boolean touchesLeft(PhysicalRectangle obj) {
-        return rectangle.intersect(obj.pos.x + obj.size.x, obj.pos.y - obj.size.y, obj.pos.x + obj.size.x, obj.pos.x + obj.size.y);
-    }
-
-    private boolean touchesDown(PhysicalRectangle obj) {
-        return rectangle.intersect(obj.pos.x-obj.size.x, obj.pos.y-obj.size.y, obj.pos.x+obj.size.x, obj.pos.y-obj.size.y);
-    }
-
-    private boolean touchesUp(PhysicalRectangle obj) {
-        return rectangle.intersect(obj.pos.x-obj.size.x, obj.pos.y+obj.size.y, obj.pos.x+obj.size.x, obj.pos.y+obj.size.y);
-    }
-
     float maximumDelta = 0.05f;
     public synchronized void update(float delta, Vector<PhysicalRectangle> rectangles) {
         if(delta > maximumDelta) {
@@ -51,7 +26,7 @@ public class PlayerSquare extends PhysicalGameObject{
             update(delta - maximumDelta, rectangles);
             delta-=maximumDelta;
         }
-        vel.y+=100*delta;
+        vel.y+=180*delta;
         vel.x+=touchListener.getWantedVelX()*delta;
         vel.y+=touchListener.getWantedVelY()*delta;
         if(touchListener.getPointersSize()==0) {
@@ -61,35 +36,55 @@ public class PlayerSquare extends PhysicalGameObject{
         pos.x+=vel.x*delta;
 
         for(PhysicalRectangle rectangle: rectangles) { //todo faster?
-            if(rectangle.isTouching(this)) {
-                int index = rectangle.closestPossible(this);
-                if(index < 2) {
-                    vel.x = 0;
-                } else {
-                    vel.y = 0;
+            Directions direction = rectangle.closestPossible(this);
+            if(rectangle.isTouching(this, 0.001f)) {
+                switch (direction) {
+                    case LEFT:
+                    case RIGHT:
+                        vel.y*=0.8;
+                }
+            }
+            if(rectangle.isTouching(this, 0)) {
+                switch (direction) {
+                    case UP:
+                        vel.y=Math.max(vel.y, 0);
+                        break;
+                    case DOWN:
+                        vel.y= Math.min(vel.y, 0);
+                        break;
+                    case LEFT:
+                    case RIGHT:
+                        vel.x=0;
                 }
                 pos = rectangle.getClosestPossible(this);
-//                if(pos == null) {
-//                    System.exit(4);
-//                }
             }
+            if(rectangle.isTouching(this, -0.5f)) {
+                if(touchListener.getWantedJump()) {
+                    jump(direction);
+                    break;
+                }
+            }
+
         }
 
         updateRectangle();
 
     }
 
-//    private synchronized boolean collides(PointF newPos, Vector<PhysicalRectangle> rectangles) {
-//        PointF oldPos = new PointF(pos.x, pos.y); //UGLY todo make better
-//        pos = newPos;
-//        updateRectangle();
-//        for(PhysicalRectangle rectangle: rectangles) {
-//            if(rectangle.isTouching(this)) {
-//                pos = oldPos;
-//                return true;
-//            }
-//        }
-//        pos = oldPos;
-//        return false;
-//    }
+    private void jump(Directions direction) {
+        float jumpForce = 120;
+        switch (direction) {
+            case DOWN:
+                vel.y=-jumpForce;
+                break;
+            case LEFT:
+                vel.x=jumpForce*0.6f;
+                vel.y=-jumpForce*0.8f;
+                break;
+            case RIGHT:
+                vel.x=-jumpForce*0.6f;
+                vel.y=-jumpForce*0.8f;
+                break;
+        }
+    }
 }

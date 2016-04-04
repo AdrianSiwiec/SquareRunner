@@ -14,6 +14,7 @@ import adrians.game.model.gameObject.PhysicalGameObject;
 public class Button extends PhysicalGameObject {
     protected Bitmap buttonBitmap;
     protected PointF val, buttonSize;
+    public Button(PointF pos, PointF size) {super(pos, size);}
     public Button(PointF pos, PointF size, Bitmap bitmap) {
         super(pos, size, bitmap);
     }
@@ -46,7 +47,7 @@ public class Button extends PhysicalGameObject {
         updateButton();
     }
 
-    public synchronized void updateButton() {
+    public void updateButton() {
         if(pointers.size()>0) {
             val = pointers.getFirst().getCurRel();
             val.x = Math.min(1, val.x);
@@ -56,7 +57,7 @@ public class Button extends PhysicalGameObject {
         }
     }
 
-    public synchronized PointF getVal() {
+    public PointF getVal() {
         return val;
     }
 }

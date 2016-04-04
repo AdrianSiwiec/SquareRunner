@@ -14,7 +14,7 @@ import adrians.game.model.gameObject.PhysicalRectangle;
 public class Level {
     public Vector<PhysicalRectangle> rectangles = new Vector<>();
     private PointF playerPos, playerSize;
-    private int playerColor;
+    private int playerColor, backgroundColor;
     private PointF cameraPos, cameraSize;
 
     public void update(float delta) {
@@ -24,6 +24,7 @@ public class Level {
     }
 
     public void render(Painter g, Camera camera) {
+        g.fillBackground(backgroundColor);
         for(PhysicalRectangle rect: rectangles) {
             rect.render(g, camera);
         }
@@ -68,6 +69,14 @@ public class Level {
 
     public void setCameraSize(PointF cameraSize) {
         this.cameraSize = cameraSize;
+    }
+
+    public int getBackgroundColor() {
+        return backgroundColor;
+    }
+
+    public void setBackgroundColor(int backgroundColor) {
+        this.backgroundColor = backgroundColor;
     }
 
     public void setPlayerColor(int playerColor) {

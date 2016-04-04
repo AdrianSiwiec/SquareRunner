@@ -10,7 +10,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 
-import adrians.framework.GameMainActivity;
+import adrians.framework.util.XmlParser;
 import adrians.game.model.gameObject.PhysicalRectangle;
 
 /**
@@ -31,31 +31,25 @@ public class LevelGenerator {
 
     public static Level generateLevel(String levelName) {
         Level level = new Level();
+        XmlParser.openFile("Levels/Level"+levelName+".tmx");
         try {
-            stream = GameMainActivity.assets.open("Levels/Level"+levelName+".tmx");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return level;
-        }
-        try {
-            parser.setInput(stream, null);
-            int event = parser.getEventType();
+            int event = XmlParser.p.getEventType();
             String lastGroup=null, lastGroupColor = null;
             while(event != XmlPullParser.END_DOCUMENT) {
-                String name = parser.getName();
+                String name = XmlParser.p.getName();
                 switch (event) {
                     case XmlPullParser.END_TAG:
                         break;
                     case XmlPullParser.START_TAG:
                         if(name.equals("objectgroup")) {
-                            lastGroup = parser.getAttributeValue(null, "name");
-                            lastGroupColor = parser.getAttributeValue(null, "color");
+                            lastGroup = XmlParser.p.getAttributeValue(null, "name");
+                            lastGroupColor = XmlParser.p.getAttributeValue(null, "color");
                         } else if(name.equals("object")) {
                             float x, y, width, height;
-                            x = Float.valueOf(parser.getAttributeValue(null, "x"));
-                            y = Float.valueOf(parser.getAttributeValue(null, "y"));
-                            width = Float.valueOf(parser.getAttributeValue(null, "width"));
-                            height = Float.valueOf(parser.getAttributeValue(null, "height"));
+                            x = Float.valueOf(XmlParser.p.getAttributeValue(null, "x"));
+                            y = Float.valueOf(XmlParser.p.getAttributeValue(null, "y"));
+                            width = Float.valueOf(XmlParser.p.getAttributeValue(null, "width"));
+                            height = Float.valueOf(XmlParser.p.getAttributeValue(null, "height"));
                             if(lastGroup.equals("Walls")) {
                                 level.addRectangle(new PhysicalRectangle(new PointF(x + width / 2, y + height / 2),
                                         new PointF(width / 2, height / 2), Color.parseColor(lastGroupColor)));
@@ -66,12 +60,14 @@ public class LevelGenerator {
                             } else if(lastGroup.equals("Camera")) {
                                 level.setCameraPos(new PointF(x+width/2, y+height/2));
                                 level.setCameraSize(new PointF(width/2, height/2));
+                            } else if(lastGroup.equals("Background")) {
+                                level.setBackgroundColor(Color.parseColor(lastGroupColor));
                             }
                         }
                         break;
 
                 }
-                event = parser.next();
+                event = XmlParser.p.next();
             }
         } catch (XmlPullParserException | IOException e) {
             e.printStackTrace();

@@ -18,14 +18,13 @@ public class PhysicalRectangle extends PhysicalGameObject{
         }
     }
 
-    public boolean isTouching(PlayerSquare player) {
-        float eps= 0f;
+    public boolean isTouching(PlayerSquare player, float eps) {
         return rectangle.intersects(player.rectangle.left+eps, player.rectangle.top+eps,
                 player.rectangle.right-eps, player.rectangle.bottom-eps);
     }
 
 
-    public int closestPossible(PlayerSquare player) {
+    public MathUtil.Directions closestPossible(PlayerSquare player) {
         float eps=0;
         tmpPoints[0].set(rectangle.left - player.size.x-eps, player.pos.y);
         tmpPoints[1].set(rectangle.right + player.size.x+eps, player.pos.y);
@@ -41,7 +40,22 @@ public class PhysicalRectangle extends PhysicalGameObject{
                 min = i;
             }
         }
-        return min;
+        MathUtil.Directions retDirection=null;
+        switch (min) {
+            case(0):
+                retDirection = MathUtil.Directions.RIGHT;
+                break;
+            case(1):
+                retDirection = MathUtil.Directions.LEFT;
+                break;
+            case(2):
+                retDirection = MathUtil.Directions.DOWN;
+                break;
+            case(3):
+                retDirection = MathUtil.Directions.UP;
+                break;
+        }
+        return retDirection;
     }
 
     public PointF getClosestPossible(PlayerSquare player) {

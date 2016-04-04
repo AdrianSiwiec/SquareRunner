@@ -10,7 +10,7 @@ public class StateManager {
     public synchronized static void pushState(State state) {
         stateStack.push(state);
     }
-    public synchronized static State getCurrentState() {
+    public static State getCurrentState() {
         if(stateStack.empty())
             return null;
         return stateStack.peek();

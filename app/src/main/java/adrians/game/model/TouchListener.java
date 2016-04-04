@@ -12,7 +12,8 @@ import adrians.game.model.gameObject.PhysicalGameObject;
  */
 public class TouchListener extends PhysicalGameObject {
     PointF touchVel, usedVel;
-    float scale = 6e3f;
+    boolean jump = false;
+    float scale = 7e3f;
     public TouchListener(PointF pos, PointF size) {
         super(pos, size);
         touchVel = new PointF();
@@ -24,7 +25,8 @@ public class TouchListener extends PhysicalGameObject {
     public synchronized void render(Painter g, Camera camera) {}
 
     @Override
-    public synchronized void update(float delta){}
+    public synchronized void update(float delta){
+    }
 
     @Override
     public synchronized boolean isInside(TouchPointer ptr) {
@@ -36,6 +38,9 @@ public class TouchListener extends PhysicalGameObject {
         super.onPointerDown(ptr);
         if(pointers.size()==1) {
             usedVel.set(0, 0);
+        }
+        if(pointers.size()==2) {
+            jump=true;
         }
     }
 
@@ -63,21 +68,24 @@ public class TouchListener extends PhysicalGameObject {
         if(pointers.size()==0) {
             touchVel.set(0, 0);
             usedVel.set(0, 0);
+        } if(pointers.size()<2) {
+            jump=false;
         }
     }
     public float getWantedVelY() {
-        if(Math.abs(touchVel.y) >= Math.abs(touchVel.x)) {
-            float ret = touchVel.y - usedVel.y;
-            usedVel.set(touchVel.x, touchVel.y);
-            return ret * scale;
-        } else {
-            return 0;
-        }
+//        if(Math.abs(touchVel.y)*5 >= Math.abs(touchVel.x)) {
+//            float ret = touchVel.y - usedVel.y;
+//            usedVel.set(usedVel.x, touchVel.y);
+//            return ret * scale;
+//        } else {
+//            return 0;
+//        }
+        return 0;
     }
     public float getWantedVelX() {
-        if(Math.abs(touchVel.x) >= Math.abs(touchVel.y)) {
+        if(Math.abs(touchVel.x)*5 >= Math.abs(touchVel.y)) {
             float ret = touchVel.x - usedVel.x;
-            usedVel.set(touchVel.x, touchVel.y);
+            usedVel.set(touchVel.x, usedVel.y);
             return ret * scale;
         } else {
             return 0;
@@ -85,6 +93,18 @@ public class TouchListener extends PhysicalGameObject {
     }
 
     public int getPointersSize() {
+
         return pointers.size();
+    }
+
+
+    public boolean getWantedJump() {
+        if(jump) {
+            jump=false;
+            return true;
+        } else {
+            return false;
+        }
+
     }
 }

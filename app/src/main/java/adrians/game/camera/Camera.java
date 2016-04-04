@@ -77,8 +77,9 @@ public class Camera {
                 calculateMatrix();
                 break;
             case FOLLOW_LOOSELY:
-                    posX += (followedObject.getPos().x - posX)*delta*followSpeed;
-                    posY += (followedObject.getPos().y - posY)*delta*followSpeed;
+                posX += (followedObject.getPos().x - posX)*delta*followSpeed;
+                posY += (followedObject.getPos().y - posY)*delta*followSpeed;
+                calculateMatrix();
                 break;
         }
     }
@@ -156,6 +157,17 @@ public class Camera {
                     -rotationAngle+object.getRotationAngle(), object.getColor());
         }
 
+    }
+
+    public synchronized void renderObjectWithColor(PhysicalGameObject object, Painter g, int color) {
+        if(object==null) return;
+        tmpPoints[0]=object.getPos().x;
+        tmpPoints[1]=object.getPos().y;
+        matrix.mapPoints(tmpPoints);
+        nW=matrix.mapRadius(object.getSize().x);
+        nH=matrix.mapRadius(object.getSize().y);
+        g.fillRect(tmpPoints[0]-nW, tmpPoints[1]-nH, nW*2, nH*2,
+                -rotationAngle+object.getRotationAngle(), color);
     }
 
     public synchronized void renderBitmap(float posX, float posY, float width, float height, Bitmap bitmap, Painter g) {

@@ -49,7 +49,7 @@ public abstract class State {
             fixedObjects.get(i).render(g, fixedCamera);
         }
     }
-    public synchronized boolean onTouch(MotionEvent e, int scaledX, int scaledY) {
+    public boolean onTouch(MotionEvent e, int scaledX, int scaledY) {
         if(e.getActionMasked() == MotionEvent.ACTION_DOWN || e.getActionMasked() == MotionEvent.ACTION_POINTER_DOWN) {
             int index;
             if(e.getActionMasked() == MotionEvent.ACTION_DOWN) {
