@@ -26,6 +26,12 @@ public class XmlParser {
     }
 
     public static void openFile(String filename) {
+        if(stream!=null) {
+            try {
+                stream.close();
+            } catch (IOException e) {
+            }
+        }
         try {
             stream = GameMainActivity.assets.open(filename);
             p.setInput(stream, null);

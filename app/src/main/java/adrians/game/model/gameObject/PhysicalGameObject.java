@@ -20,6 +20,7 @@ public class PhysicalGameObject extends GameObject {
     protected Bitmap bitmap;
     protected int color;
     protected volatile LinkedList<TouchPointer> pointers;
+    protected LinkedList<MovementHolder> movements = new LinkedList<>();
     public PhysicalGameObject(PointF pos, PointF size) {
         this.pos = pos;
         this.size = size;
@@ -31,9 +32,10 @@ public class PhysicalGameObject extends GameObject {
         this.rotationAngle = 0;
     }
 
-
-
-    public void update(float delta){updateRectangle();}
+    public void update(float delta){
+        updateMovements(delta);
+        updateRectangle();
+    }
 
     public void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
@@ -125,5 +127,52 @@ public class PhysicalGameObject extends GameObject {
 
     public int getColor() {
         return color;
+    }
+
+    public void moveSmoothly(PointF object, PointF dest, float durationTime) {
+        movements.addLast(new MovementHolder(object, dest, durationTime));
+    }
+    public class MovementHolder {
+        PointF object, dest, orig;
+        float durationTime;
+        float elapsedTime;
+
+        public MovementHolder(PointF object, PointF dest, float durationTime) {
+            this.object = object;
+            this.dest = dest;
+            this.durationTime = durationTime;
+            orig=new PointF(object.x, object.y);
+            elapsedTime=0;
+        }
+
+        private void deleteItself() {
+            movements.remove(this);
+            movements.addLast(new MovementHolder(object, orig, durationTime));
+        }
+
+        private void update(float delta) {
+            elapsedTime+=delta;
+            if(elapsedTime>=durationTime) {
+                setSmooth(object, orig, dest, 1);
+                deleteItself();
+            } else {
+                setSmooth(object, orig, dest, elapsedTime / durationTime);
+            }
+        }
+
+        public void setSmooth(PointF object, PointF orig, PointF dest, float arg) {
+            object.set(calculateSmooth(orig.x, dest.x, arg), calculateSmooth(orig.y, dest.y, arg));
+        }
+
+        public float calculateSmooth(float orig, float dest, float arg) {
+            double t= (Math.sin((arg-0.5)*Math.PI)+1)/2;
+            return (float) (orig*(1-t)+dest*t);
+        }
+    }
+
+    protected void updateMovements(float delta) {
+        for(MovementHolder movement: movements) {
+            movement.update(delta);
+        }
     }
 }

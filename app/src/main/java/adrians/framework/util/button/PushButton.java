@@ -19,6 +19,10 @@ public class PushButton extends Button{
         pressed = new Button(pos, size, pressedBitmap);
     }
 
+    public PushButton(PointF pos, PointF size) {
+        super(pos, size);
+    }
+
     @Override
     public void render(Painter g, Camera camera) {
         if(isPressed) {

@@ -25,6 +25,7 @@ public class PlayState extends State{
         fixedObjects.addElement(new PushButton(new PointF(85, -45), new PointF(10, 10),
                 Assets.pauseButtonBitmap, Assets.pauseButtonBitmap));
         pauseButton = (PushButton) fixedObjects.elementAt(0);
+        pauseButton.moveSmoothly(pauseButton.getPos(), new PointF(85, 45), 4);
 
 
         touchListener = new TouchListener(new PointF(0, 0), new PointF(40, 50));

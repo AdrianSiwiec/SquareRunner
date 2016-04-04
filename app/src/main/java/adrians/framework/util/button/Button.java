@@ -26,10 +26,10 @@ public class Button extends PhysicalGameObject {
         this.buttonBitmap = buttonBitmap;
     }
 
-    @Override
-    public void update(float delta) {
-
-    }
+//    @Override
+//    public void update(float delta) {
+//
+//    }
 
     @Override
     public void render(Painter g, Camera camera) {

@@ -1,25 +1,26 @@
-package adrians.framework.util;
+package adrians.framework.util.button;
 
 import android.graphics.PointF;
+import android.graphics.Typeface;
 import android.text.DynamicLayout;
 import android.text.Layout;
 import android.text.TextPaint;
 
+import adrians.framework.util.Painter;
 import adrians.game.camera.Camera;
-import adrians.game.model.gameObject.PhysicalGameObject;
 
 /**
  * Created by pierre on 02/04/16.
  */
-public class MessageBox extends PhysicalGameObject{
+public class MessageButton extends PushButton{
     String message;
     int fontColor, fontHeight;
     int numberOfLines = 1;
     TextPaint textPaint = new TextPaint();
     DynamicLayout layout;
 
-    public MessageBox(PointF pos, PointF size, String message, int backgroundColor, int fontColor,
-                      int fontHeight, Camera camera) {
+    public MessageButton(PointF pos, PointF size, String message, int backgroundColor, int fontColor,
+                         int fontHeight, Camera camera) {
         super(pos, size);
         this.message = message;
         this.color = backgroundColor;
@@ -34,7 +35,10 @@ public class MessageBox extends PhysicalGameObject{
     @Override
     public void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
-        g.drawTextLayout(camera.getScreenDistance(pos.x+size.x*1.1f), camera.getScreenDistance(pos.y+size.y*2-fontHeight/2), layout);
+        g.setFont(Typeface.SANS_SERIF, camera.getScreenDistance(size.y));
+        g.setColor(fontColor);
+        PointF coords = camera.getScreenCoords(pos.x, pos.y); //TODO make not shitty
+        g.drawString(message, coords.x, coords.y);
 
     }
 }

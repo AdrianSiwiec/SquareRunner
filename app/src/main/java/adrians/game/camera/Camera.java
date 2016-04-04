@@ -10,8 +10,8 @@ import adrians.game.model.gameObject.PhysicalGameObject;
 /**
  * Created by pierre on 10/02/16.
  */
-public class Camera {
-    private float posX, posY, width, height, rotationAngle;
+public class Camera extends PhysicalGameObject{
+    private float rotationAngle;
     private int screenHeight, screenWidth;
     private Matrix matrix, reversedMatrix;
     private float[] tmpPoints;
@@ -23,10 +23,8 @@ public class Camera {
         FIXED, FOLLOW, FOLLOW_LOOSELY
     }
     Mode mode = Mode.FIXED;
-    public Camera(float posX, float posY, float width, int screenWidth, int screenHeight) {
-        this.posX = posX;
-        this.posY = posY;
-        this.width = width;
+    public Camera(float posX, float posY, float sizeX, int screenWidth, int screenHeight) {
+        super(new PointF(posX, posY), new PointF(sizeX, sizeX*screenHeight/screenWidth));
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         rotationAngle = 0;
@@ -38,24 +36,24 @@ public class Camera {
         calculateMatrix();
     }
 
-    public Camera(float posX, float posY, float width, float rotationAngle, int screenWidth, int screenHeight) {
-        this(posX, posY, width, screenWidth, screenHeight);
+    public Camera(float posX, float posY, float sizeX, float rotationAngle, int screenWidth, int screenHeight) {
+        this(posX, posY, sizeX, screenWidth, screenHeight);
         this.rotationAngle = rotationAngle;
         calculateMatrix();
     }
 
     public void setModeFollow(PhysicalGameObject obj) {
         followedObject = obj;
-        posX = followedObject.getPos().x;
-        posY = followedObject.getPos().y;
+        pos.x = followedObject.getPos().x;
+        pos.y = followedObject.getPos().y;
         calculateMatrix();
         mode = Mode.FOLLOW;
     }
 
     public void setModeFollowLoosely(PhysicalGameObject obj, float ropeLength, float followSpeed) {
         followedObject = obj;
-        posX = followedObject.getPos().x;
-        posY = followedObject.getPos().y;
+        pos.x = followedObject.getPos().x;
+        pos.y = followedObject.getPos().y;
         this.ropeLength = ropeLength;
         this.followSpeed = followSpeed;
         calculateMatrix();
@@ -68,20 +66,27 @@ public class Camera {
 
 
     public void update(float delta) {
+        super.update(delta);
         switch (mode) {
             case FIXED:
                 break;
             case FOLLOW:
-                posX = followedObject.getPos().x;
-                posY = followedObject.getPos().y;
+                pos.x = followedObject.getPos().x;
+                pos.y = followedObject.getPos().y;
                 calculateMatrix();
                 break;
             case FOLLOW_LOOSELY:
-                posX += (followedObject.getPos().x - posX)*delta*followSpeed;
-                posY += (followedObject.getPos().y - posY)*delta*followSpeed;
+                pos.x += (followedObject.getPos().x - pos.x)*delta*followSpeed;
+                pos.y += (followedObject.getPos().y - pos.y)*delta*followSpeed;
                 calculateMatrix();
                 break;
         }
+    }
+
+    @Override
+    protected void updateMovements(float delta) {
+        super.updateMovements(delta);
+        calculateMatrix();
     }
 
     public synchronized PointF getWorldCoords(float x, float y) {
@@ -112,14 +117,14 @@ public class Camera {
 
     private synchronized void calculateMatrix() {
         matrix.reset();
-        matrix.preScale(screenWidth / width / 2, screenHeight / height / 2);
-        matrix.preTranslate(-posX + width, -posY + height);
-        matrix.preRotate(-rotationAngle, posX, posY);
+        matrix.preScale(screenWidth / size.x / 2, screenHeight / size.y / 2);
+        matrix.preTranslate(-pos.x + size.x, -pos.y + size.y);
+        matrix.preRotate(-rotationAngle, pos.x, pos.y);
         matrix.invert(reversedMatrix);
     }
 
     private synchronized void calculateHeight() {
-        height = width * screenHeight/screenWidth;
+        size.y = size.x * screenHeight/screenWidth;
     }
 
     public float getRotationAngle() {
@@ -131,8 +136,8 @@ public class Camera {
         calculateMatrix();
     }
 
-    public synchronized void setWidth(float width) {
-        this.width = width;
+    public synchronized void setWidth(float sizeX) {
+        this.size.x = sizeX;
         calculateHeight();
         calculateMatrix();
 
@@ -170,27 +175,27 @@ public class Camera {
                 -rotationAngle+object.getRotationAngle(), color);
     }
 
-    public synchronized void renderBitmap(float posX, float posY, float width, float height, Bitmap bitmap, Painter g) {
+    public synchronized void renderBitmap(float posX, float posY, float sizeX, float sizeY, Bitmap bitmap, Painter g) {
         tmpPoints[0] = posX;
         tmpPoints[1] = posY;
         matrix.mapPoints(tmpPoints);
-        nW = matrix.mapRadius(width);
-        nH = matrix.mapRadius(height);
+        nW = matrix.mapRadius(sizeX);
+        nH = matrix.mapRadius(sizeY);
         g.drawImage(bitmap, tmpPoints[0] - nW, tmpPoints[1] - nH,
                 nW * 2, nH * 2);
     }
 
     public void move(float x, float y) {
-        posX +=x;
-        posY +=y;
+        pos.x +=x;
+        pos.y +=y;
         calculateMatrix();
     }
 
     public float getWidth() {
-        return width;
+        return size.x;
     }
 
     public float getHeight() {
-        return height;
+        return size.y;
     }
 }

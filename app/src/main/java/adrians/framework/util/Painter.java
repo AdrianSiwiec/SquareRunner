@@ -38,6 +38,9 @@ public class Painter {
     public synchronized void drawString(String str, int x, int y) {
         canvas.drawText(str, x, y, paint);
     }
+    public synchronized void drawString(String str, float x, float y) {
+        canvas.drawText(str, x, y, paint);
+    }
     public synchronized void fillRect(int x, int y, int width, int height, int color) {
         dstRect.set(x, y, x+width, y+height);
         paint.setColor(color);
