@@ -30,7 +30,7 @@
  <objectgroup color="#b2733f" name="Goal">
   <object x="170" y="740" width="10" height="10"/>
  </objectgroup>
- <objectgroup color="#ce9668" name="Messages">
+ <objectgroup color="#ce9668" name="Messages" visible="0">
   <object name="Just checking how it's °" x="110" y="700" width="60" height="20"/>
  </objectgroup>
 </map>

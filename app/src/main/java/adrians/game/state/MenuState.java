@@ -26,6 +26,7 @@ public class MenuState extends State {
     private PointF cameraPos, levelCameraPos;
     private float cameraWidth;
     private LinkedList<MessageButton> levelButtons = new LinkedList<>();
+    private LinkedList<MessageButton> backButtons = new LinkedList<>();
     private Set<String> unlocked = GameMainActivity.getUnlocked();
     private int buttonBackgroundColor;
     public MenuState() {
@@ -74,6 +75,8 @@ public class MenuState extends State {
                                     playButton = (MessageButton) worldObjects.lastElement();
                                 } else if(buttonName.equals("About")) {
                                     aboutButton = (MessageButton) worldObjects.lastElement();
+                                } else if(buttonName.equals("Back")) {
+                                    backButtons.addLast((MessageButton) worldObjects.lastElement());
                                 }
                             } else if(lastGroup.equals("Camera")) {
                                 cameraPos = new PointF(x+width/2, y+width*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH/2);
@@ -124,8 +127,13 @@ public class MenuState extends State {
                 });
             }
         }
+        for(MessageButton messageButton: backButtons) {
+            if(messageButton.gotPushed()) {
+                worldCamera.moveSmoothly(worldCamera.getPos(), cameraPos, 0.5f);
+            }
+        }
         if(aboutButton.gotPushed()) {
-            //TODO
+            worldCamera.moveSmoothly(worldCamera.getPos(), new PointF(worldCamera.getPos().x, worldCamera.getPos().y+140), 1);
         }
     }
 
