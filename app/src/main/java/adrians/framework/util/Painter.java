@@ -41,6 +41,18 @@ public class Painter {
     public synchronized void drawString(String str, float x, float y) {
         canvas.drawText(str, x, y, paint);
     }
+    public synchronized void drawText(String str, float x, float y, float fontHeight, int fontColor, Typeface font) {
+        setFont(font, fontHeight);
+        setColor(fontColor);
+        drawString(str, x, y);
+    }
+
+//    public synchronized void drawText(String str, float x, float y, float fontHeight, int fontColor, Typeface font, float rotationAngle) {
+//        canvas.save();
+//        canvas.rotate(rotationAngle, x + fontHeight*str.length()/ 8, y +fontHeight / 2);
+//        drawText(str, x, y, fontHeight, fontColor, font);
+//        canvas.restore();
+//    }
     public synchronized void fillRect(int x, int y, int width, int height, int color) {
         dstRect.set(x, y, x+width, y+height);
         paint.setColor(color);

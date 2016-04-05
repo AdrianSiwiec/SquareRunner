@@ -23,13 +23,13 @@ public class PauseState extends State {
         worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(100, 100 * GameMainActivity.GAME_HEIGHT / GameMainActivity.GAME_WIDTH), 0.2f);
         backgroundColor = Color.rgb(127, 127, 127);
         resumeButton = new MessageButton(new PointF(0, -25), new PointF(30, 10), "Resume", fontColor,
-                Color.BLACK, 8, worldCamera);
+                Color.BLACK, 8);
         worldObjects.addElement(resumeButton);
         restartButton = new MessageButton(new PointF(0, 0), new PointF(30, 10), "Restart", fontColor,
-                Color.BLACK, 8, worldCamera);
+                Color.BLACK, 8);
         worldObjects.addElement(restartButton);
         exitButton = new MessageButton(new PointF(0, 25), new PointF(30, 10), "Menu", fontColor,
-                Color.BLACK, 8, worldCamera);
+                Color.BLACK, 8);
         worldObjects.addElement(exitButton);
         worldObjects.addElement(new PhysicalRectangle(new PointF(-205, 0), new PointF(100, 100), playerColor));
         worldObjects.addElement(new PhysicalRectangle(new PointF(205, 0), new PointF(100, 100), backColor));

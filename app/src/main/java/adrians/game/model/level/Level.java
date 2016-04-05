@@ -5,6 +5,7 @@ import android.graphics.PointF;
 import java.util.Vector;
 
 import adrians.framework.util.Painter;
+import adrians.framework.util.button.MessageButton;
 import adrians.game.camera.Camera;
 import adrians.game.model.gameObject.PhysicalRectangle;
 
@@ -13,6 +14,7 @@ import adrians.game.model.gameObject.PhysicalRectangle;
  */
 public class Level {
     public Vector<PhysicalRectangle> rectangles = new Vector<>();
+    public Vector<MessageButton> messages = new Vector<>();
     private PointF playerPos, playerSize;
     private int playerColor, backgroundColor;
     private PointF cameraPos, cameraSize;
@@ -29,6 +31,10 @@ public class Level {
         for(PhysicalRectangle rect: rectangles) {
             rect.render(g, camera);
         }
+        for(MessageButton mes: messages) {
+            mes.render(g, camera);
+        }
+        goal.render(g, camera);
     }
 
     public void addRectangle(PhysicalRectangle rectangle) {
@@ -38,6 +44,10 @@ public class Level {
     public void addGoal(PhysicalRectangle rectangle) {
         rectangles.add(0, rectangle);
         goal = rectangle;
+    }
+
+    public void addMessage (MessageButton messageButton) {
+        messages.addElement(messageButton);
     }
 
     public PointF getPlayerPos() {

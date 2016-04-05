@@ -3,6 +3,7 @@ package adrians.game.camera;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.Typeface;
 
 import adrians.framework.util.Painter;
 import adrians.game.model.gameObject.PhysicalGameObject;
@@ -183,6 +184,14 @@ public class Camera extends PhysicalGameObject{
         nH = matrix.mapRadius(sizeY);
         g.drawImage(bitmap, tmpPoints[0] - nW, tmpPoints[1] - nH,
                 nW * 2, nH * 2);
+    }
+
+    public synchronized void renderText(String text, PointF pos, float fontHeight, int fontColor, Typeface font, Painter g) {
+        tmpPoints[0] = pos.x;
+        tmpPoints[1] = pos.y;
+        matrix.mapPoints(tmpPoints);
+        nW = matrix.mapRadius(fontHeight);
+        g.drawText(text, tmpPoints[0]-text.length()*nW/4, tmpPoints[1]+nW/2.2f, nW, fontColor, font);
     }
 
 //    public void move(float x, float y) {

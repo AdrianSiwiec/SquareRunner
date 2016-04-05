@@ -2,6 +2,9 @@ package adrians.game.state;
 
 import android.graphics.PointF;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import adrians.framework.Assets;
 import adrians.framework.GameMainActivity;
 import adrians.framework.util.Caller;
@@ -60,7 +63,7 @@ public class PlayState extends State{
         if(player.isHappy()) {
             currentLevel.goal.setRotationAngle(currentLevel.goal.getRotationAngle()+delta*360*3);
             player.setRotationAngle(player.getRotationAngle()+delta*360*3);
-            worldCamera.setRotationAngle(worldCamera.getRotationAngle()+delta*360*0.3f);
+//            worldCamera.setRotationAngle(worldCamera.getRotationAngle()+delta*360*0.3f);
         }
         if(pauseButton.gotPushed()) {
             fixedCamera.moveSmoothly(fixedCamera.getPos(), new PointF(pauseButton.getPos().x+pauseButton.getSize().x*0.22f,
@@ -76,8 +79,12 @@ public class PlayState extends State{
         player.update(delta, currentLevel.rectangles);
 //        currentLevel.update(delta);
         super.update(delta);
-        if(currentLevel.goal.isTouching(player, -0.01f)) {
+        if(currentLevel.goal.isTouching(player, 0)) {
             if(!player.isHappy()) {
+                String nextLevel = ""+(new Integer(levelName)+1);
+                Set<String> unlckd = new HashSet<String>(GameMainActivity.getUnlocked());
+                unlckd.add(nextLevel);
+                GameMainActivity.setUnlocked(unlckd);
                 pauseButton.moveSmoothly(pauseButton.getPos(), new PointF(120, -45), 0.5f);
                 worldCamera.setModeFixed();
                 worldCamera.moveSmoothly(worldCamera.getPos(), currentLevel.goal.getPos(), 2f);

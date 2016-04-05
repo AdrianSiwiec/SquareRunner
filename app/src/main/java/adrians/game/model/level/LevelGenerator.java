@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import adrians.framework.util.XmlParser;
+import adrians.framework.util.button.MessageButton;
 import adrians.game.model.gameObject.PhysicalRectangle;
 
 /**
@@ -65,6 +66,13 @@ public class LevelGenerator {
                             } else if(lastGroup.equals("Goal")) {
                                 level.addGoal(new PhysicalRectangle(new PointF(x+width/2, y+height/2),
                                         new PointF(width/2, height/2), Color.parseColor(lastGroupColor)));
+                            } else if(lastGroup.equals("Messages")) {
+                                String buttonName = XmlParser.p.getAttributeValue(null, "name");
+                                int fontColor = Color.parseColor("#b2733f");
+                                level.addMessage(new MessageButton(new PointF(x+width/2, y+height/2),
+                                        new PointF(width/2, height/2), buttonName, Color.parseColor(lastGroupColor), fontColor,
+                                        height/4));
+
                             }
                         }
                         break;

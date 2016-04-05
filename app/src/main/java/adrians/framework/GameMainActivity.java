@@ -2,12 +2,16 @@ package adrians.framework;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.WindowManager;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by pierre on 06/02/16.
@@ -18,9 +22,9 @@ public class GameMainActivity extends Activity {
     public static AssetManager assets;
 //    public static boolean playSound = true;
 
-//    private static SharedPreferences prefs;
-//    private static final String highScoreKey = "highScoreKey"; //TODO Clean up
-//    private static int highScore;
+    private static SharedPreferences prefs;
+    private static Set<String> unlocked = new HashSet<>();
+    private static String unlocksTag="Unlocked";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,23 +42,29 @@ public class GameMainActivity extends Activity {
         }
 //        prefs = getPreferences(Activity.MODE_PRIVATE);
 //        highScore = retrieveHighScore();
+        prefs = getSharedPreferences(unlocksTag, 0);
+        unlocked = retrieveUnlocked();
+
         assets=getAssets();
         sGame = new GameView(this, GAME_WIDTH, GAME_HEIGHT);
         setContentView(sGame);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
-//    public static void setHighScore(int highScore) {
-//        GameMainActivity.highScore = highScore;
-//        Editor editor = prefs.edit();
-//        editor.putInt(highScoreKey, highScore);
-//        editor.commit();
-//    }
+    public static void setUnlocked(Set<String> unlocked) {
+        GameMainActivity.unlocked = unlocked;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putStringSet(unlocksTag, unlocked);
+        editor.commit();
+    }
 
-//    private int retrieveHighScore() {
-//        return prefs.getInt(highScoreKey, 0);
-//    }
+    private Set<String> retrieveUnlocked() {
+        return prefs.getStringSet(unlocksTag, unlocked);
+    }
 
+    public static Set<String> getUnlocked() {
+        return unlocked;
+    }
 //    public static int getHighScore() {
 //        return highScore;
 //    }

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="adrians.simpleandroidgdf">
+    package="pierreSquared.SquareRunner">
 
     <application
         android:allowBackup="true"

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="10" tileheight="10">
+ <objectgroup color="#ce9668" name="Walls">
+  <object x="310" y="470" width="870" height="20"/>
+  <object x="1180" y="290" width="20" height="200"/>
+  <object x="1180" y="240" width="20" height="50"/>
+  <object x="1100" y="240" width="80" height="20"/>
+  <object x="1100" y="260" width="20" height="160"/>
+  <object x="1040" y="520" width="80" height="20"/>
+  <object x="220" y="470" width="90" height="20"/>
+  <object x="140" y="390" width="20" height="140"/>
+  <object x="160" y="510" width="80" height="20"/>
+  <object x="240" y="530" width="70" height="20"/>
+  <object x="310" y="550" width="70" height="20"/>
+  <object x="380" y="570" width="800" height="20"/>
+  <object x="980" y="540" width="200" height="30"/>
+  <object x="240" y="530" width="70" height="20"/>
+  <object x="1050" y="420" width="70" height="20"/>
+ </objectgroup>
+ <objectgroup color="#b2733f" name="Player">
+  <object x="440" y="460" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#e7b892" name="Background">
+  <object x="620" y="160" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup name="Camera">
+  <object x="380" y="380" width="240" height="130"/>
+ </objectgroup>
+ <objectgroup color="#b2733f" name="Goal">
+  <object x="1090" y="510" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#ce9668" name="Messages">
+  <object name="Sometimes" x="440" y="430" width="70" height="20"/>
+  <object name="You won't even know" x="620" y="430" width="130" height="20"/>
+  <object name="What you're supposed to do." x="860" y="430" width="180" height="20"/>
+  <object name="But once you do" x="400" y="610" width="100" height="20"/>
+  <object name="You don't even mind" x="660" y="610" width="130" height="20"/>
+ </objectgroup>
+</map>

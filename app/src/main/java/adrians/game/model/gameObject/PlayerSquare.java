@@ -20,7 +20,7 @@ public class PlayerSquare extends PhysicalGameObject{
     }
 
 
-    float maximumDelta = 0.05f;
+    float maximumDelta = 0.04f;
     public synchronized void update(float delta, Vector<PhysicalRectangle> rectangles) {
         if(delta > maximumDelta) {
             Log.d("PlayerUpdate", "exceeded maximum delta:" + delta);
@@ -57,8 +57,10 @@ public class PlayerSquare extends PhysicalGameObject{
                         vel.y= Math.min(vel.y, 0);
                         break;
                     case LEFT:
+                        vel.x = Math.max(vel.x, 0);
+                        break;
                     case RIGHT:
-                        vel.x=0;
+                        vel.x = Math.min(vel.x, 0);
                 }
                 pos = rectangle.getClosestPossible(this);
             }

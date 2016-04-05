@@ -1,20 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="20" tilewidth="10" tileheight="10">
- <objectgroup color="#a4383a" name="Walls">
-  <object x="0" y="180" width="400" height="20"/>
-  <object x="70" y="100" width="20" height="81"/>
-  <object x="0" y="10" width="20" height="170"/>
-  <object x="70" y="20" width="20" height="60"/>
-  <object x="0" y="10" width="90" height="20"/>
-  <object x="90" y="110" width="110" height="10"/>
-  <object x="220" y="80" width="20" height="20"/>
-  <object x="260" y="60" width="20" height="20"/>
-  <object x="310" y="40" width="80" height="20"/>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="10" tileheight="10">
+ <objectgroup color="#ce9668" name="Walls">
+  <object x="40" y="670" width="660" height="10"/>
+  <object x="690" y="600" width="10" height="70"/>
+  <object x="650" y="580" width="10" height="60"/>
+  <object x="700" y="600" width="90" height="10"/>
+  <object x="650" y="550" width="140" height="10"/>
+  <object x="650" y="560" width="10" height="20"/>
+  <object x="790" y="550" width="10" height="60"/>
  </objectgroup>
- <objectgroup color="#005500" name="Player">
-  <object x="30" y="160" width="10" height="10"/>
+ <objectgroup color="#b2733f" name="Player">
+  <object x="80" y="660" width="10" height="10"/>
  </objectgroup>
- <objectgroup color="#ffffff" name="Camera">
-  <object x="0" y="70" width="230" height="110"/>
+ <objectgroup color="#e7b892" name="Background">
+  <object x="660" y="460" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup name="Camera">
+  <object x="40" y="610" width="200" height="100"/>
+ </objectgroup>
+ <objectgroup color="#b2733f" name="Goal">
+  <object x="770" y="590" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#ce9668" name="Messages">
+  <object name="You can bounce off walls." x="100" y="620" width="160" height="20"/>
+  <object name="Sometimes you need to." x="430" y="620" width="150" height="20"/>
+  <object name="To get to her." x="670" y="570" width="80" height="20"/>
  </objectgroup>
 </map>

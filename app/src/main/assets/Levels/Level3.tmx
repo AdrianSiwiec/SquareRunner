@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="10" tileheight="10">
+ <objectgroup color="#ce9668" name="Walls">
+  <object x="70" y="760" width="330" height="20"/>
+  <object x="380" y="680" width="20" height="80"/>
+  <object x="380" y="680" width="200" height="20"/>
+  <object x="380" y="620" width="200" height="20"/>
+  <object x="300" y="240" width="20" height="480"/>
+  <object x="380" y="550" width="200" height="20"/>
+  <object x="380" y="475" width="200" height="20"/>
+  <object x="380" y="395" width="200" height="20"/>
+ </objectgroup>
+ <objectgroup color="#b2733f" name="Player">
+  <object x="90" y="750" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#e7b892" name="Background">
+  <object x="220" y="30" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup name="Camera">
+  <object x="40" y="710" width="220" height="80"/>
+ </objectgroup>
+ <objectgroup color="#b2733f" name="Goal">
+  <object x="560" y="385" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#ce9668" name="Messages">
+  <object name="It won't always be easy." x="440" y="645" width="140" height="20"/>
+  <object name="But like they say:" x="440" y="580" width="110" height="20"/>
+  <object name="If it's easy" x="440" y="510" width="70" height="20"/>
+  <object name="It's not worth it." x="440" y="430" width="100" height="20"/>
+ </objectgroup>
+</map>
