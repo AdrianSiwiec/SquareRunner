@@ -57,6 +57,11 @@ public class PlayState extends State{
 
     @Override
     public void update(float delta) {
+        if(player.isHappy()) {
+            currentLevel.goal.setRotationAngle(currentLevel.goal.getRotationAngle()+delta*360*3);
+            player.setRotationAngle(player.getRotationAngle()+delta*360*3);
+            worldCamera.setRotationAngle(worldCamera.getRotationAngle()+delta*360*0.3f);
+        }
         if(pauseButton.gotPushed()) {
             fixedCamera.moveSmoothly(fixedCamera.getPos(), new PointF(pauseButton.getPos().x+pauseButton.getSize().x*0.22f,
                             pauseButton.getPos().y), 0.2f);
@@ -71,7 +76,20 @@ public class PlayState extends State{
         player.update(delta, currentLevel.rectangles);
 //        currentLevel.update(delta);
         super.update(delta);
-
+        if(currentLevel.goal.isTouching(player, -0.01f)) {
+            if(!player.isHappy()) {
+                pauseButton.moveSmoothly(pauseButton.getPos(), new PointF(120, -45), 0.5f);
+                worldCamera.setModeFixed();
+                worldCamera.moveSmoothly(worldCamera.getPos(), currentLevel.goal.getPos(), 2f);
+                worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(0.1f, 0.1f), 2f, new Caller() {
+                    @Override
+                    public void call() {
+                        StateManager.popState();
+                    }
+                });
+            }
+            player.beHappy();
+        }
     }
 
 //    @Override

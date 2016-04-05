@@ -1,6 +1,7 @@
 package adrians.framework;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.os.Build;
@@ -80,4 +81,7 @@ public class GameMainActivity extends Activity {
 //            Assets.pauseMusic();
 //        }
 //    }
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+    }
 }

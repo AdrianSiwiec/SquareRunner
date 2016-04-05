@@ -16,6 +16,7 @@ public class Level {
     private PointF playerPos, playerSize;
     private int playerColor, backgroundColor;
     private PointF cameraPos, cameraSize;
+    public PhysicalRectangle goal;
 
     public void update(float delta) {
         for(PhysicalRectangle rect: rectangles) {
@@ -33,6 +34,10 @@ public class Level {
     public void addRectangle(PhysicalRectangle rectangle) {
 
         rectangles.addElement(rectangle);
+    }
+    public void addGoal(PhysicalRectangle rectangle) {
+        rectangles.add(0, rectangle);
+        goal = rectangle;
     }
 
     public PointF getPlayerPos() {

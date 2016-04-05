@@ -101,14 +101,24 @@ public class MenuState extends State {
         for(final MessageButton messageButton: levelButtons) {
             if(messageButton.gotPushed()) {
                 worldCamera.moveSmoothly(worldCamera.getPos(),
-                        new PointF(messageButton.getPos().x, messageButton.getPos().y+messageButton.getSize().y*0.7f), 0.5f);
-                worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(0.1f, 0.1f), 0.5f, new Caller() {
+                        new PointF(messageButton.getPos().x, messageButton.getPos().y+messageButton.getSize().y*0.9f), 0.5f);
+                worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(0.01f, 0.01f), 0.5f, new Caller() {
                     @Override
                     public void call() {
-                        StateManager.changeState(new PlayState(messageButton.getMessage()));
+                        StateManager.pushState(new PlayState(messageButton.getMessage()));
                     }
                 });
             }
         }
+        if(aboutButton.gotPushed()) {
+            //TODO
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        worldCamera.moveSmoothly(worldCamera.getPos(), levelCameraPos, 0.5f);
+        worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(cameraWidth, cameraWidth*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH), 0.5f);
     }
 }

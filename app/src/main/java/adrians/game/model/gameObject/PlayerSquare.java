@@ -13,6 +13,7 @@ import adrians.game.model.TouchListener;
  */
 public class PlayerSquare extends PhysicalGameObject{
     TouchListener touchListener;
+    private boolean isHappy = false;
     public PlayerSquare(PointF pos, PointF size, int color, TouchListener touchListener) {
         super(pos, size, color);
         this.touchListener=touchListener;
@@ -31,6 +32,9 @@ public class PlayerSquare extends PhysicalGameObject{
         vel.y+=touchListener.getWantedVelY()*delta;
         if(touchListener.getPointersSize()==0) {
             vel.x *= 0.95;
+        }
+        if(isHappy) {
+            return;
         }
         pos.y+=vel.y*delta;
         pos.x+=vel.x*delta;
@@ -86,5 +90,13 @@ public class PlayerSquare extends PhysicalGameObject{
                 vel.y=-jumpForce*0.8f;
                 break;
         }
+    }
+
+    public void beHappy() {
+        isHappy = true;
+    }
+
+    public boolean isHappy() {
+        return isHappy;
     }
 }

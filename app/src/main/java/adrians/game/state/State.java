@@ -1,5 +1,6 @@
 package adrians.game.state;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.view.MotionEvent;
 

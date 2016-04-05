@@ -67,6 +67,7 @@ public class PauseState extends State {
                 @Override
                 public void call() {
                     StateManager.popState();
+                    StateManager.popState();
                     StateManager.changeState(new MenuState());
                 }
             });

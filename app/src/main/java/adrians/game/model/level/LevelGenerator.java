@@ -62,6 +62,9 @@ public class LevelGenerator {
                                 level.setCameraSize(new PointF(width/2, height/2));
                             } else if(lastGroup.equals("Background")) {
                                 level.setBackgroundColor(Color.parseColor(lastGroupColor));
+                            } else if(lastGroup.equals("Goal")) {
+                                level.addGoal(new PhysicalRectangle(new PointF(x+width/2, y+height/2),
+                                        new PointF(width/2, height/2), Color.parseColor(lastGroupColor)));
                             }
                         }
                         break;
