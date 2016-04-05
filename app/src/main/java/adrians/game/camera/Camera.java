@@ -185,11 +185,11 @@ public class Camera extends PhysicalGameObject{
                 nW * 2, nH * 2);
     }
 
-    public void move(float x, float y) {
-        pos.x +=x;
-        pos.y +=y;
-        calculateMatrix();
-    }
+//    public void move(float x, float y) {
+//        pos.x +=x;
+//        pos.y +=y;
+//        calculateMatrix();
+//    }
 
     public float getWidth() {
         return size.x;
@@ -197,5 +197,11 @@ public class Camera extends PhysicalGameObject{
 
     public float getHeight() {
         return size.y;
+    }
+
+    @Override
+    public void setPos(PointF pos) {
+        super.setPos(pos);
+        calculateMatrix();
     }
 }

@@ -5,7 +5,9 @@ import android.graphics.PointF;
 import android.graphics.RectF;
 
 import java.util.LinkedList;
+import java.util.Vector;
 
+import adrians.framework.util.Caller;
 import adrians.framework.util.Painter;
 import adrians.framework.util.TouchPointer;
 import adrians.game.camera.Camera;
@@ -20,7 +22,7 @@ public class PhysicalGameObject extends GameObject {
     protected Bitmap bitmap;
     protected int color;
     protected volatile LinkedList<TouchPointer> pointers;
-    protected LinkedList<MovementHolder> movements = new LinkedList<>();
+    protected Vector<MovementHolder> movements = new Vector<>();
     public PhysicalGameObject(PointF pos, PointF size) {
         this.pos = pos;
         this.size = size;
@@ -130,12 +132,16 @@ public class PhysicalGameObject extends GameObject {
     }
 
     public void moveSmoothly(PointF object, PointF dest, float durationTime) {
-        movements.addLast(new MovementHolder(object, dest, durationTime));
+        movements.add(new MovementHolder(object, dest, durationTime));
+    }
+    public void moveSmoothly(PointF object, PointF dest, float durationTime, Caller caller) {
+        movements.add(new MovementHolder(object, dest, durationTime, caller));
     }
     public class MovementHolder {
         PointF object, dest, orig;
         float durationTime;
         float elapsedTime;
+        Caller caller;
 
         public MovementHolder(PointF object, PointF dest, float durationTime) {
             this.object = object;
@@ -143,20 +149,31 @@ public class PhysicalGameObject extends GameObject {
             this.durationTime = durationTime;
             orig=new PointF(object.x, object.y);
             elapsedTime=0;
+            caller = null;
+        }
+
+        public MovementHolder(PointF object, PointF dest, float durationTime, Caller caller) {
+            this(object, dest, durationTime);
+            this.caller = caller;
         }
 
         private void deleteItself() {
             movements.remove(this);
-            movements.addLast(new MovementHolder(object, orig, durationTime));
+            if(caller!=null) {
+                caller.call();
+            }
+//            movements.addLast(new MovementHolder(object, orig, durationTime)); //looks rad
         }
 
-        private void update(float delta) {
+        private boolean update(float delta) {
             elapsedTime+=delta;
             if(elapsedTime>=durationTime) {
                 setSmooth(object, orig, dest, 1);
                 deleteItself();
+                return false;
             } else {
                 setSmooth(object, orig, dest, elapsedTime / durationTime);
+                return true;
             }
         }
 
@@ -171,8 +188,10 @@ public class PhysicalGameObject extends GameObject {
     }
 
     protected void updateMovements(float delta) {
-        for(MovementHolder movement: movements) {
-            movement.update(delta);
+        for(int i=0; i<movements.size(); i++) {
+            if(!movements.elementAt(i).update(delta)) {
+                i--;
+            }
         }
     }
 }

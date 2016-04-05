@@ -2,14 +2,15 @@ package adrians.game.state;
 
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
+import java.util.LinkedList;
 
 import adrians.framework.GameMainActivity;
+import adrians.framework.util.Caller;
 import adrians.framework.util.XmlParser;
 import adrians.framework.util.button.MessageButton;
 import adrians.game.camera.Camera;
@@ -19,7 +20,10 @@ import adrians.game.camera.Camera;
  */
 public class MenuState extends State {
 //    PushButton playButton;
-    MessageButton playButton, aboutButton;
+    private MessageButton playButton, aboutButton;
+    private PointF cameraPos, levelCameraPos;
+    private float cameraWidth;
+    private LinkedList<MessageButton> levelButtons = new LinkedList<>();
     public MenuState() {
         super();
         System.gc();
@@ -31,7 +35,7 @@ public class MenuState extends State {
         XmlParser.openFile("Layouts/Menu.tmx");
         try {
             int event = XmlParser.p.getEventType();
-            String lastGroup=null, lastGroupColor=null;
+            String lastGroup=null, lastGroupColor=null, fontColor=null;
             while(event != XmlPullParser.END_DOCUMENT) {
                 String name = XmlParser.p.getName();
                 switch (event) {
@@ -41,6 +45,7 @@ public class MenuState extends State {
                         if(name.equals("objectgroup")) {
                             lastGroup = XmlParser.p.getAttributeValue(null, "name");
                             lastGroupColor = XmlParser.p.getAttributeValue(null, "color");
+                            fontColor = XmlParser.p.getAttributeValue(null, "fontColor");
                         } else if(name.equals("object")) {
                             float x, y, width, height;
                             String buttonName;
@@ -52,19 +57,26 @@ public class MenuState extends State {
                             if(lastGroup.equals("Buttons")) {
                                 worldObjects.addElement(new MessageButton(new PointF(x+width/2, y+height/2),
                                         new PointF(width/2, height/2), buttonName, Color.parseColor(lastGroupColor),
-                                        Color.BLACK, (int) (worldCamera.getScreenDistance(height/2)), worldCamera));
+                                        Color.parseColor(fontColor), (int) (worldCamera.getScreenDistance(height/2)),
+                                        worldCamera));
                                 if(buttonName.equals("Play")) {
                                     playButton = (MessageButton) worldObjects.lastElement();
                                 } else if(buttonName.equals("About")) {
                                     aboutButton = (MessageButton) worldObjects.lastElement();
                                 }
                             } else if(lastGroup.equals("Camera")) {
-                                worldCamera = new Camera(x+width/2, y+width*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH/2,
-                                        width/2, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
+                                cameraPos = new PointF(x+width/2, y+width*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH/2);
+                                cameraWidth = width/2;
+                                worldCamera = new Camera(cameraPos.x, cameraPos.y, cameraWidth, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
                             } else if(lastGroup.equals("Levels")) {
                                 worldObjects.addElement(new MessageButton(new PointF(x+width/2, y+height/2),
                                         new PointF(width/2, height/2), buttonName, Color.parseColor(lastGroupColor),
-                                        Color.BLACK, (int) (worldCamera.getScreenDistance(height*0.5f)), worldCamera));
+                                        Color.parseColor(fontColor), (int) (worldCamera.getScreenDistance(height*0.5f)), worldCamera));
+                                levelButtons.addLast((MessageButton) worldObjects.lastElement());
+                            } else if(lastGroup.equals("LevelsCamera")) {
+                                levelCameraPos = new PointF(x+width/2, y+height/2);
+                            } else if(lastGroup.equals("Background")) {
+                                backgroundColor = Color.parseColor(lastGroupColor);
                             }
                         }
                         break;
@@ -76,16 +88,27 @@ public class MenuState extends State {
             e.printStackTrace();
         }
 //        worldCamera.setModeFollow(worldObjects.elementAt(0));
+        PointF oldPos = new PointF(worldCamera.getPos().x, worldCamera.getPos().y);
+        worldCamera.setPos(new PointF(oldPos.x-200, oldPos.y));
+        worldCamera.moveSmoothly(worldCamera.getPos(), oldPos, 0.3f);
     }
     @Override
     public void update(float delta) {
         super.update(delta);
-//        if(playButton.gotPushed()) {
-//            StateManager.changeState(new PlayState());
-//        }
         if(playButton.gotPushed()) {
-            Log.d("PUSH", "PUSDLK");
-            worldCamera.moveSmoothly(worldCamera.getPos(), new PointF(80, 60), 3);
+            worldCamera.moveSmoothly(worldCamera.getPos(), levelCameraPos, 0.5f);
+        }
+        for(final MessageButton messageButton: levelButtons) {
+            if(messageButton.gotPushed()) {
+                worldCamera.moveSmoothly(worldCamera.getPos(),
+                        new PointF(messageButton.getPos().x, messageButton.getPos().y+messageButton.getSize().y*0.7f), 0.5f);
+                worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(0.1f, 0.1f), 0.5f, new Caller() {
+                    @Override
+                    public void call() {
+                        StateManager.changeState(new PlayState(messageButton.getMessage()));
+                    }
+                });
+            }
         }
     }
 }

@@ -17,6 +17,7 @@ public class StateManager {
     }
     public synchronized static void popState() {
         stateStack.pop();
+        stateStack.peek().onResume();
     }
     public synchronized static void changeState(State state) {
         if(!stateStack.isEmpty()) {

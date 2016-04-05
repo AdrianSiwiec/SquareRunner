@@ -2,22 +2,24 @@ package adrians.framework.util.button;
 
 import android.graphics.PointF;
 import android.graphics.Typeface;
-import android.text.DynamicLayout;
-import android.text.Layout;
 import android.text.TextPaint;
+
+import java.util.LinkedList;
 
 import adrians.framework.util.Painter;
 import adrians.game.camera.Camera;
+import adrians.game.model.gameObject.PhysicalRectangle;
 
 /**
  * Created by pierre on 02/04/16.
  */
+// This whole class is just a stub. Its only reason of existence is that it was quick to write it
+// that way. TODO make more generic
 public class MessageButton extends PushButton{
     String message;
     int fontColor, fontHeight;
-    int numberOfLines = 1;
     TextPaint textPaint = new TextPaint();
-    DynamicLayout layout;
+    private LinkedList<PhysicalRectangle> borders = new LinkedList<>();
 
     public MessageButton(PointF pos, PointF size, String message, int backgroundColor, int fontColor,
                          int fontHeight, Camera camera) {
@@ -28,17 +30,28 @@ public class MessageButton extends PushButton{
         this.fontHeight = fontHeight;
         textPaint.setColor(fontColor);
         textPaint.setTextSize(camera.getScreenDistance(fontHeight));
-        layout =new DynamicLayout(message, textPaint, (int)camera.getScreenDistance(size.x*1.8f),
-                Layout.Alignment.ALIGN_CENTER, 1.0f, 0f, false);
+        float borderThickness = size.y*0.07f;
+        borders.addLast(new PhysicalRectangle(new PointF(pos.x, pos.y + size.y-borderThickness), new PointF(size.x, borderThickness), fontColor));
+        borders.addLast(new PhysicalRectangle(new PointF(pos.x, pos.y - size.y+borderThickness), new PointF(size.x, borderThickness), fontColor));
+        borders.addLast(new PhysicalRectangle(new PointF(pos.x-size.x+borderThickness, pos.y), new PointF(borderThickness, size.y), fontColor));
+        borders.addLast(new PhysicalRectangle(new PointF(pos.x+size.x-borderThickness, pos.y), new PointF(borderThickness, size.y), fontColor));
     }
 
     @Override
     public void render(Painter g, Camera camera) {
         camera.renderObject(this, g);
+        for(PhysicalRectangle border: borders) {
+            border.render(g, camera);
+        }
+        PointF sPos;
         g.setFont(Typeface.SANS_SERIF, camera.getScreenDistance(size.y));
         g.setColor(fontColor);
-        PointF coords = camera.getScreenCoords(pos.x, pos.y); //TODO make not shitty
-        g.drawString(message, coords.x, coords.y);
+        sPos = camera.getScreenCoords(pos.x-message.length()*size.y/4, pos.y+size.y/2.2f);
+        g.drawString(message, sPos.x, sPos.y);
 
+    }
+
+    public String getMessage() {
+        return message;
     }
 }

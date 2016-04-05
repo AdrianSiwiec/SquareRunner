@@ -3,16 +3,23 @@
  <objectgroup name="Camera">
   <object x="40" y="210" width="180" height="100"/>
  </objectgroup>
- <objectgroup color="#0e01a4" name="Levels">
-  <object name="1" x="80" y="30" width="20" height="20"/>
+ <objectgroup color="#732405" name="Levels" fontColor="#3C1100">
+  <object name="1" x="80" y="30" width="20" height="20">
+  </object>
   <object name="2" x="120" y="30" width="20" height="20"/>
   <object name="3" x="160" y="30" width="20" height="20"/>
   <object name="4" x="80" y="60" width="20" height="20"/>
   <object name="5" x="120" y="60" width="20" height="20"/>
   <object name="6" x="160" y="60" width="20" height="20"/>
  </objectgroup>
- <objectgroup color="#0109a4" name="Buttons">
+ <objectgroup color="#732405" name="Buttons" fontColor="#3C1100" >
   <object name="Play" x="110" y="240" width="40" height="20"/>
   <object name="About" x="110" y="270" width="40" height="20"/>
+ </objectgroup>
+ <objectgroup name="LevelsCamera">
+  <object x="125" y="50" width="10" height="10"/>
+ </objectgroup>
+ <objectgroup color="#aa5939" name="Background">
+  <object x="270" y="110" width="10" height="10"/>
  </objectgroup>
 </map>

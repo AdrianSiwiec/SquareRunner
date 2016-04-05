@@ -20,6 +20,7 @@ public abstract class State {
     protected Camera worldCamera, fixedCamera;
     protected HashMap<Integer, TouchPointer> pointers;
     protected HashMap<PhysicalGameObject, Integer> objectsPointedAt;
+    protected int backgroundColor = Color.WHITE;
 
     public State() {
         worldObjects = new Vector<>();
@@ -41,7 +42,7 @@ public abstract class State {
         }
     }
     public void render(Painter g) {
-        g.fillRect(0, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT, Color.WHITE);
+        g.fillRect(0, 0, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT, backgroundColor);
         for(int i=0; i< worldObjects.size(); i++) {
             worldObjects.get(i).render(g, worldCamera);
         }
