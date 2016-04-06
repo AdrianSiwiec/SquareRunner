@@ -1,4 +1,6 @@
 # SquareRunner
+It's published on Play Store! https://play.google.com/store/apps/details?id=adrians.simpleandroidgdf
+
 My name is Adrian Siwiec and I'm Theoretical Computer Science student at Jagiellonian University.
 
 This is game I made to see if I can and to gain some experience.
