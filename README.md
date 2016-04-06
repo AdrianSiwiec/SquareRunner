@@ -1,4 +1,6 @@
 # SquareRunner
+My name is Adrian Siwiec and I'm Theoretical Computer Science student at Jagiellonian University.
+
 This is game I made to see if I can and to gain some experience.
 
 It's roughly based on James S. Cho's game from book "The Beginner's Guide to Android Game Development" (See LICENSE.txt). The framework from the book is deeply remodelled and extended.
