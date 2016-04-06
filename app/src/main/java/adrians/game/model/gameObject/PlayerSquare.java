@@ -1,7 +1,6 @@
 package adrians.game.model.gameObject;
 
 import android.graphics.PointF;
-import android.util.Log;
 
 import java.util.Vector;
 
@@ -14,6 +13,7 @@ import adrians.game.model.TouchListener;
 public class PlayerSquare extends PhysicalGameObject{
     TouchListener touchListener;
     private boolean isHappy = false;
+    private float timeSinceLastMove=0;
     public PlayerSquare(PointF pos, PointF size, int color, TouchListener touchListener) {
         super(pos, size, color);
         this.touchListener=touchListener;
@@ -23,7 +23,7 @@ public class PlayerSquare extends PhysicalGameObject{
     float maximumDelta = 0.04f;
     public synchronized void update(float delta, Vector<PhysicalRectangle> rectangles) {
         if(delta > maximumDelta) {
-            Log.d("PlayerUpdate", "exceeded maximum delta:" + delta);
+//            Log.d("PlayerUpdate", "exceeded maximum delta:" + delta);
             update(delta - maximumDelta, rectangles);
             delta-=maximumDelta;
         }
@@ -73,6 +73,12 @@ public class PlayerSquare extends PhysicalGameObject{
 
         }
 
+        if(Math.abs(vel.x)<10 && Math.abs(vel.y)<10) {
+            timeSinceLastMove+=delta;
+        } else {
+            timeSinceLastMove=0;
+        }
+
         updateRectangle();
 
     }
@@ -96,6 +102,10 @@ public class PlayerSquare extends PhysicalGameObject{
 
     public void beHappy() {
         isHappy = true;
+    }
+
+    public float getTimeSinceLastMove() {
+        return timeSinceLastMove;
     }
 
     public boolean isHappy() {

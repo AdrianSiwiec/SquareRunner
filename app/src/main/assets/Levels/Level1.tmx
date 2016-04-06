@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="40" tilewidth="10" tileheight="10">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="240" height="50" tilewidth="10" tileheight="10">
  <objectgroup color="#ce9668" name="Walls">
-  <object x="0" y="200" width="10" height="200"/>
-  <object x="10" y="390" width="450" height="10"/>
-  <object x="510" y="390" width="290" height="10"/>
-  <object x="790" y="170" width="10" height="220"/>
+  <object x="10" y="190" width="20" height="200"/>
+  <object x="10" y="390" width="1530" height="20"/>
+  <object x="1610" y="390" width="420" height="20"/>
+  <object x="2010" y="170" width="20" height="220"/>
  </objectgroup>
  <objectgroup color="#b2733f" name="Player">
-  <object x="30" y="380" width="10" height="10"/>
+  <object x="50" y="380" width="10" height="10"/>
  </objectgroup>
  <objectgroup color="#e7b892" name="Background">
   <object x="30" y="240" width="10" height="10"/>
@@ -16,11 +16,13 @@
   <object x="0" y="280" width="250" height="110"/>
  </objectgroup>
  <objectgroup color="#b2733f" name="Goal">
-  <object x="770" y="380" width="10" height="10"/>
+  <object x="1980" y="380" width="10" height="10"/>
  </objectgroup>
  <objectgroup color="#ce9668" name="Messages">
-  <object name="Swipe to move." x="40" y="340" width="100" height="20" />
-  <object name="Second finger jumps." x="360" y="340" width="120" height="20"/>
-  <object name="Get to her." x="650" y="340" width="90" height="20"/>
+  <object name="Swipe to move." x="70" y="340" width="100" height="20"/>
+  <object name="Second finger jumps." x="1450" y="340" width="120" height="20"/>
+  <object name="Get to her." x="1840" y="340" width="90" height="20"/>
+  <object name="Hold swipe to move steadily." x="290" y="340" width="160" height="20"/>
+  <object name="Pause to restart or go back." x="1170" y="340" width="170" height="20"/>
  </objectgroup>
 </map>

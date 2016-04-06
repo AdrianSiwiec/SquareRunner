@@ -97,6 +97,40 @@ public class PlayState extends State{
             }
             player.beHappy();
         }
+
+//        Log.d("Time", player.getTimeSinceLastMove()+"");
+        if(worldCamera.getMovements().size()==0) {
+            if (levelName.equals("5") && player.getTimeSinceLastMove() > 3) {
+                worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(350f, 350f * GameMainActivity.GAME_HEIGHT / GameMainActivity.GAME_WIDTH), 0.3f);
+            } else {
+                if (worldCamera.getSize().x > currentLevel.getCameraSize().x + 2) {
+                    worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(currentLevel.getCameraSize().x,
+                            currentLevel.getCameraSize().x*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH), 0.3f);
+                }
+            }
+        }
+
+        if(levelName.equals("6") && player.getVel().x<0.3 && player.getVel().y<0.3) {
+            currentLevel.goal.pos.x+=0.25*60*delta;
+            currentLevel.goal.pos.x=Math.min(780, currentLevel.goal.pos.x);
+            currentLevel.goal.updateRectangle();
+        }
+
+        else if(levelName.equals("7") && player.getTimeSinceLastMove()>0.5) {
+            currentLevel.goal.pos.x-=0.25*60*delta;
+            currentLevel.goal.pos.x=Math.max(980, currentLevel.goal.pos.x);
+            currentLevel.goal.updateRectangle();
+        }
+
+        else if(levelName.equals("9") && player.pos.x>1180) {
+            currentLevel.goal.pos.x+=2000;
+            currentLevel.goal.updateRectangle();
+        }
+//        if(levelName.equals("9") && player.pos.x> 1240 && player.getTimeSinceLastMove()>3 &&
+//                currentLevel.messages.lastElement().getMovements().size()==0) {
+//            currentLevel.messages.lastElement().moveSmoothly(currentLevel.messages.lastElement().getPos(),
+//                    new PointF(1350, 280), 1);
+//        }
     }
 
 //    @Override

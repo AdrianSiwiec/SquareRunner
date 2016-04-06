@@ -116,7 +116,7 @@ public class Camera extends PhysicalGameObject{
         return matrix.mapRadius(r);
     }
 
-    private synchronized void calculateMatrix() {
+    public synchronized void calculateMatrix() {
         matrix.reset();
         matrix.preScale(screenWidth / size.x / 2, screenHeight / size.y / 2);
         matrix.preTranslate(-pos.x + size.x, -pos.y + size.y);

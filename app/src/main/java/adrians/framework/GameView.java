@@ -8,7 +8,6 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 
-import adrians.framework.util.FpsCounter;
 import adrians.framework.util.InputHandler;
 import adrians.framework.util.Painter;
 import adrians.game.state.LoadState;
@@ -28,7 +27,7 @@ public class GameView extends SurfaceView implements Runnable{
     private volatile boolean running = false;
     private InputHandler inputHandler;
 
-    private boolean showFps = true;
+//    private boolean showFps = true;
 
     public GameView(Context context, int gameWidth, int gameHeight) {
         super(context);
@@ -83,7 +82,7 @@ public class GameView extends SurfaceView implements Runnable{
             long deltaNanos = sleepDurationNanos + updateDurationNanos;
             updateAndRender(deltaNanos, beforeUpdateAndRender);
             updateDurationNanos = (System.nanoTime() - beforeUpdateAndRender);
-            sleepDurationNanos = Math.max(2, (int)(16+2f/3-updateDurationNanos/1e6f));
+            sleepDurationNanos = Math.max(1, (int)(16+2f/3-updateDurationNanos/1e6f));
 
             try {
                 Thread.sleep((int)(sleepDurationNanos/1e6));
@@ -112,13 +111,13 @@ public class GameView extends SurfaceView implements Runnable{
     }
 
     private void updateAndRender(long delta, long nanoTime) {
-        delta = Math.min(delta, (long ) (0.2f*1e9) );
+        delta = Math.min(delta, (long ) (0.15f*1e9) );
         StateManager.getCurrentState().update(delta / 1e9f);
         StateManager.getCurrentState().render(graphics);
-        if(showFps) {
-            FpsCounter.update(nanoTime);
-            FpsCounter.printFps(graphics);
-        }
+//        if(showFps) {
+//            FpsCounter.update(nanoTime);
+//            FpsCounter.printFps(graphics);
+//        }
         renderGameImage();
     }
 

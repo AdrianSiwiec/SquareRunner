@@ -16,12 +16,17 @@ import adrians.game.camera.Camera;
  * Created by pierre on 10/02/16.
  */
 public class PhysicalGameObject extends GameObject {
-    protected PointF pos, vel, size;
+    public PointF pos, vel, size; //whatever
     protected float rotationAngle;
     protected RectF rectangle;
     protected Bitmap bitmap;
     protected int color;
     protected volatile LinkedList<TouchPointer> pointers;
+
+    public Vector<MovementHolder> getMovements() {
+        return movements;
+    }
+
     protected Vector<MovementHolder> movements = new Vector<>();
     public PhysicalGameObject(PointF pos, PointF size) {
         this.pos = pos;
@@ -82,7 +87,7 @@ public class PhysicalGameObject extends GameObject {
         pointers.remove(ptr);
     }
 
-    protected void updateRectangle() {
+    public void updateRectangle() {
         rectangle.set(pos.x - size.x, pos.y - size.y, pos.x + size.x, pos.y + size.y);
     }
 

@@ -1,26 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="50" tilewidth="10" tileheight="10">
  <objectgroup name="Camera">
-  <object x="40" y="210" width="180" height="100"/>
+  <object x="20" y="190" width="220" height="100"/>
  </objectgroup>
  <objectgroup color="#ce9668" name="Levels">
-  <object name="1" x="80" y="30" width="20" height="20"/>
+  <object name="1" x="60" y="30" width="20" height="20"/>
   <object name="2" x="120" y="30" width="20" height="20"/>
-  <object name="3" x="160" y="30" width="20" height="20"/>
-  <object name="4" x="80" y="60" width="20" height="20"/>
+  <object name="3" x="180" y="30" width="20" height="20"/>
+  <object name="4" x="60" y="60" width="20" height="20"/>
   <object name="5" x="120" y="60" width="20" height="20"/>
-  <object name="6" x="160" y="60" width="20" height="20"/>
+  <object name="6" x="180" y="60" width="20" height="20"/>
+  <object name="7" x="60" y="90" width="20" height="20"/>
+  <object name="8" x="120" y="90" width="20" height="20"/>
+  <object name="9" x="180" y="90" width="20" height="20"/>
  </objectgroup>
  <objectgroup color="#ce9668" name="Buttons">
-  <object name="Play" x="110" y="240" width="40" height="20"/>
-  <object name="About" x="110" y="270" width="40" height="20"/>
-  <object name="Back" x="140" y="90" width="30" height="20"/>
+  <object name="Play" x="110" y="230" width="40" height="20"/>
+  <object name="About" x="110" y="280" width="40" height="20"/>
+  <object name="Back" x="200" y="120" width="20" height="10"/>
   <object name="See my github page:" x="60" y="410" width="140" height="15"/>
-  <object name="github.com/pierreSquared/SquareRunner" x="60" y="435" width="140" height="12"/>
-  <object name="Back" x="180" y="380" width="20" height="10"/>
+  <object name="github.com/pierreSquared/SquareRunner" x="40" y="430" width="180" height="15"/>
+  <object name="Back" x="200" y="380" width="20" height="10"/>
  </objectgroup>
  <objectgroup name="LevelsCamera">
-  <object x="125" y="50" width="10" height="10"/>
+  <object x="125" y="65" width="10" height="10"/>
  </objectgroup>
  <objectgroup color="#e7b892" name="Background">
   <object x="270" y="110" width="10" height="10"/>

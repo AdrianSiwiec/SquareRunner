@@ -140,6 +140,7 @@ public class MenuState extends State {
     @Override
     public void onResume() {
         super.onResume();
+        System.gc();
         unlocked = GameMainActivity.getUnlocked();
         for(MessageButton button : levelButtons) {
             if(unlocked.contains(button.getMessage())) {
