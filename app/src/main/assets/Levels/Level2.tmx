@@ -23,6 +23,6 @@
  <objectgroup color="#ce9668" name="Messages">
   <object name="You can bounce off walls." x="100" y="620" width="160" height="20"/>
   <object name="Sometimes you need to." x="430" y="620" width="150" height="20"/>
-  <object name="To get to her." x="670" y="570" width="80" height="20"/>
+  <object name="To get to her." x="670" y="565" width="80" height="20"/>
  </objectgroup>
 </map>

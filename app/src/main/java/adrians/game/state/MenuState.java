@@ -24,6 +24,9 @@ public class MenuState extends State {
 //    PushButton playButton;
     private MessageButton playButton, aboutButton;
     private PointF cameraPos, levelCameraPos;
+
+
+
     private float cameraWidth;
     private LinkedList<MessageButton> levelButtons = new LinkedList<>();
     private LinkedList<MessageButton> backButtons = new LinkedList<>();
@@ -150,5 +153,12 @@ public class MenuState extends State {
         }
         worldCamera.moveSmoothly(worldCamera.getPos(), levelCameraPos, 0.5f);
         worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(cameraWidth, cameraWidth * GameMainActivity.GAME_HEIGHT / GameMainActivity.GAME_WIDTH), 0.5f);
+    }
+       public float getCameraWidth() {
+        return cameraWidth;
+    }
+
+    public PointF getLevelCameraPos() {
+        return levelCameraPos;
     }
 }

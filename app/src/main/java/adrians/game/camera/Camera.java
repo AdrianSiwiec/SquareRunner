@@ -69,19 +69,16 @@ public class Camera extends PhysicalGameObject{
     public void update(float delta) {
         super.update(delta);
         switch (mode) {
-            case FIXED:
-                break;
             case FOLLOW:
                 pos.x = followedObject.getPos().x;
                 pos.y = followedObject.getPos().y;
-                calculateMatrix();
                 break;
             case FOLLOW_LOOSELY:
                 pos.x += (followedObject.getPos().x - pos.x)*delta*followSpeed;
                 pos.y += (followedObject.getPos().y - pos.y)*delta*followSpeed;
-                calculateMatrix();
                 break;
         }
+        calculateMatrix();
     }
 
     @Override
@@ -191,7 +188,10 @@ public class Camera extends PhysicalGameObject{
         tmpPoints[1] = pos.y;
         matrix.mapPoints(tmpPoints);
         nW = matrix.mapRadius(fontHeight);
-        g.drawText(text, tmpPoints[0]-text.length()*nW/4, tmpPoints[1]+nW/2.2f, nW, fontColor, font);
+        g.setFont(font, fontHeight);
+        g.setColor(fontColor);
+        nH = matrix.mapRadius(g.getPaint().measureText(text));
+        g.drawText(text, tmpPoints[0]-nH/2, tmpPoints[1]+nW/2.2f, nW, fontColor, font);
     }
 
 //    public void move(float x, float y) {

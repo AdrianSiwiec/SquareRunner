@@ -130,4 +130,8 @@ public class Painter {
         layout.draw(canvas);
         canvas.restore();
     }
+
+    public Paint getPaint() {
+        return paint;
+    }
 }

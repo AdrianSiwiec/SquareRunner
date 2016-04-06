@@ -114,6 +114,34 @@ public class PlayState extends State{
                 }
             }
         }
+//        if(player.getPos().y>4500 && pauseButton.getMovements().size()==0) {
+//            pauseButton.moveSmoothly(pauseButton.getPos(), new PointF(120, -45), 0.5f);
+//        }
+
+        if(player.getPos().y>5000 && worldCamera.getMovements().size()==0) {
+            worldCamera.setSize(new PointF(0.5f, 0.5f));
+            worldCamera.setModeFixed();
+            worldCamera.setPos(new PointF(currentLevel.goal.pos.x, currentLevel.goal.pos.y - 7));
+            worldCamera.moveSmoothly(worldCamera.getPos(), new PointF(currentLevel.goal.pos.x,
+                    currentLevel.goal.pos.y-5), 0.5f, new Caller() {
+                @Override
+                public void call() {
+                    StateManager.changeState(new PlayState(levelName));
+                    PlayState play = (PlayState) StateManager.getCurrentState();
+                    play.pauseButton.setPos(new PointF(85, -45));
+                }
+            });
+//            StateManager.changeState(new PlayState(levelName));
+//            final PlayState play= (PlayState) StateManager.getCurrentState();
+//            play.worldCamera.setModeFixed();
+//            play.worldCamera.setPos(new PointF(worldCamera.getPos().x, worldCamera.getPos().y + 20));
+//            play.worldCamera.moveSmoothly(worldCamera.getPos(), worldCamera.getPos(), 0.5f, new Caller() {
+//                @Override
+//                public void call() {
+//                    worldCamera.setModeFollowLoosely(play.player, 10, 10);
+//                }
+//            });
+        }
 
         if(levelName.equals("6") && player.getVel().x<0.3 && player.getVel().y<0.3) {
             currentLevel.goal.pos.x+=0.25*60*delta;

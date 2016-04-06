@@ -45,8 +45,8 @@ public class MessageButton extends PushButton{
         for(PhysicalRectangle border: borders) {
             border.render(g, camera);
         }
-        PointF sPos;
-        camera.renderText(message, pos, size.y, fontColor, Typeface.SANS_SERIF, g);
+//        PointF sPos;
+        camera.renderText(message, pos, size.y, fontColor, Typeface.DEFAULT, g);
 //        g.setFont(Typeface.SANS_SERIF, camera.getScreenDistance(size.y));
 //        g.setColor(fontColor);
 //        sPos = camera.getScreenCoords(pos.x-message.length()*size.y/4, pos.y+size.y/2.2f);
