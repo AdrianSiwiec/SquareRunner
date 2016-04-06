@@ -10,19 +10,17 @@
   <object x="60" y="780" width="920" height="130"/>
   <object x="340" y="220" width="20" height="60"/>
   <object x="390" y="220" width="20" height="60"/>
-  <object x="280" y="280" width="80" height="20"/>
+  <object x="300" y="280" width="60" height="20"/>
   <object x="390" y="280" width="60" height="20"/>
-  <object x="280" y="300" width="20" height="70"/>
-  <object x="280" y="370" width="170" height="20"/>
+  <object x="280" y="280" width="20" height="190"/>
+  <object x="300" y="370" width="150" height="20"/>
   <object x="450" y="280" width="20" height="110"/>
   <object x="640" y="220" width="20" height="90"/>
-  <object x="640" y="310" width="200" height="20"/>
   <object x="820" y="260" width="20" height="50"/>
   <object x="820" y="240" width="140" height="20"/>
-  <object x="520" y="310" width="120" height="20"/>
+  <object x="520" y="310" width="320" height="20"/>
   <object x="60" y="260" width="180" height="20"/>
   <object x="220" y="280" width="20" height="110"/>
-  <object x="280" y="390" width="20" height="80"/>
   <object x="120" y="429" width="160" height="20"/>
   <object x="60" y="240" width="100" height="20"/>
   <object x="300" y="450" width="310" height="20"/>
@@ -45,8 +43,8 @@
  </objectgroup>
  <objectgroup color="#ce9668" name="Messages">
   <object name="Sometimes it helps" x="110" y="160" width="120" height="20"/>
-  <object name="To stop." x="440" y="160" width="60" height="20"/>
-  <object name="And look around." x="610" y="160" width="100" height="20"/>
+  <object name="To stop for a second." x="410" y="160" width="120" height="20"/>
+  <object name="Or three." x="610" y="160" width="60" height="20"/>
   <object name="Because a failure" x="540" y="740" width="110" height="20"/>
   <object name="Is a chance to try again." x="310" y="740" width="140" height="20"/>
  </objectgroup>

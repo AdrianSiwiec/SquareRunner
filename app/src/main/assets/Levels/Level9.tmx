@@ -17,10 +17,10 @@
  </objectgroup>
  <objectgroup color="#ce9668" name="Messages">
   <object name="And it becomes hard" x="50" y="290" width="130" height="20"/>
-  <object name="Thx for playing." x="1590" y="290" width="100" height="20"/>
+  <object name="Thx for playing." x="1560" y="290" width="100" height="20"/>
   <object name="To appreciate" x="300" y="290" width="90" height="20"/>
   <object name="That she's there." x="520" y="290" width="100" height="20"/>
-  <object name="Unless she's" x="740" y="290" width="80" height="20"/>
+  <object name="Not until she's" x="740" y="290" width="90" height="20"/>
   <object name="Gone." x="1030" y="290" width="40" height="20"/>
  </objectgroup>
 </map>

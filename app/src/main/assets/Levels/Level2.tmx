@@ -3,8 +3,8 @@
  <objectgroup color="#ce9668" name="Walls">
   <object x="40" y="670" width="670" height="20"/>
   <object x="690" y="600" width="20" height="70"/>
-  <object x="700" y="600" width="100" height="20"/>
-  <object x="780" y="550" width="20" height="60"/>
+  <object x="710" y="600" width="90" height="20"/>
+  <object x="780" y="550" width="20" height="50"/>
   <object x="630" y="530" width="170" height="20"/>
   <object x="630" y="550" width="20" height="90"/>
  </objectgroup>

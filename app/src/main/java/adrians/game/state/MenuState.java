@@ -2,7 +2,7 @@ package adrians.game.state;
 
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.util.Log;
+//import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -43,7 +43,7 @@ public class MenuState extends State {
         }
         XmlParser.openFile("Layouts/Menu.tmx");
         try {
-            Log.d("Unlocked", unlocked.toString());
+//            Log.d("Unlocked", unlocked.toString());
             int event = XmlParser.p.getEventType();
             String lastGroup=null, lastGroupColor=null, fontColor="#b2733f";
             while(event != XmlPullParser.END_DOCUMENT) {
@@ -145,7 +145,7 @@ public class MenuState extends State {
         for(MessageButton button : levelButtons) {
             if(unlocked.contains(button.getMessage())) {
                 button.setBackgroundColor(buttonBackgroundColor);
-                Log.d("Unlocked", button.getMessage());
+//                Log.d("Unlocked", button.getMessage());
             }
         }
         worldCamera.moveSmoothly(worldCamera.getPos(), levelCameraPos, 0.5f);

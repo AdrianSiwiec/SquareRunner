@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="120" height="120" tilewidth="10" tileheight="10">
  <objectgroup color="#ce9668" name="Walls">
-  <object x="310" y="470" width="870" height="20"/>
-  <object x="1180" y="290" width="20" height="200"/>
-  <object x="1180" y="240" width="20" height="50"/>
+  <object x="250" y="470" width="930" height="20"/>
+  <object x="1180" y="240" width="20" height="250"/>
   <object x="1100" y="240" width="80" height="20"/>
   <object x="1100" y="260" width="20" height="160"/>
   <object x="1040" y="520" width="80" height="20"/>
-  <object x="220" y="470" width="90" height="20"/>
-  <object x="140" y="390" width="20" height="160"/>
-  <object x="160" y="510" width="80" height="40"/>
-  <object x="240" y="530" width="70" height="40"/>
-  <object x="310" y="550" width="70" height="40"/>
-  <object x="380" y="570" width="800" height="20"/>
+  <object x="110" y="390" width="20" height="160"/>
+  <object x="130" y="510" width="80" height="40"/>
+  <object x="210" y="530" width="70" height="40"/>
+  <object x="280" y="550" width="70" height="40"/>
+  <object x="350" y="570" width="830" height="20"/>
   <object x="980" y="540" width="200" height="30"/>
   <object x="1050" y="420" width="70" height="20"/>
  </objectgroup>

@@ -78,7 +78,10 @@ public class PlayState extends State{
 
         player.update(delta, currentLevel.rectangles);
 //        currentLevel.update(delta);
-        super.update(delta);
+//        super.update(delta);
+        worldCamera.update(delta);
+        fixedCamera.update(delta);
+        pauseButton.update(delta);
         if(currentLevel.goal.isTouching(player, 0)) {
             if(!player.isHappy()) {
                 String nextLevel = ""+(new Integer(levelName)+1);
@@ -99,13 +102,15 @@ public class PlayState extends State{
         }
 
 //        Log.d("Time", player.getTimeSinceLastMove()+"");
-        if(worldCamera.getMovements().size()==0) {
-            if (levelName.equals("5") && player.getTimeSinceLastMove() > 3) {
-                worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(350f, 350f * GameMainActivity.GAME_HEIGHT / GameMainActivity.GAME_WIDTH), 0.3f);
-            } else {
-                if (worldCamera.getSize().x > currentLevel.getCameraSize().x + 2) {
-                    worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(currentLevel.getCameraSize().x,
-                            currentLevel.getCameraSize().x*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH), 0.3f);
+        if(levelName.equals("5")) {
+            if (worldCamera.getMovements().size() == 0) {
+                if (player.getTimeSinceLastMove() > 3) {
+                    worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(350f, 350f * GameMainActivity.GAME_HEIGHT / GameMainActivity.GAME_WIDTH), 0.3f);
+                } else {
+                    if (worldCamera.getSize().x > currentLevel.getCameraSize().x + 2) {
+                        worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(currentLevel.getCameraSize().x,
+                                currentLevel.getCameraSize().x * GameMainActivity.GAME_HEIGHT / GameMainActivity.GAME_WIDTH), 0.3f);
+                    }
                 }
             }
         }
