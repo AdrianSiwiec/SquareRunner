@@ -31,6 +31,7 @@ public class GameView extends SurfaceView implements Runnable{
 
     public GameView(Context context, int gameWidth, int gameHeight) {
         super(context);
+        StateManager.setContext(context);
         gameImage = Bitmap.createBitmap(gameWidth, gameHeight, Bitmap.Config.RGB_565);
         gameImageSrc = new Rect(0, 0, gameImage.getWidth(), gameImage.getHeight());
         gameImageDesc = new Rect();

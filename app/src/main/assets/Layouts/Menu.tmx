@@ -16,7 +16,7 @@
  </objectgroup>
  <objectgroup color="#ce9668" name="Buttons">
   <object name="Play" x="110" y="230" width="40" height="20"/>
-  <object name="About" x="110" y="280" width="40" height="20"/>
+  <object name="Login" x="110" y="280" width="40" height="20"/>
   <object name="Back" x="200" y="120" width="20" height="10"/>
   <object name="See my github page:" x="60" y="410" width="140" height="15"/>
   <object name="github.com/pierreSquared/SquareRunner" x="40" y="430" width="180" height="15"/>

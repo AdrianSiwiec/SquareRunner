@@ -7,11 +7,19 @@ import android.content.res.AssetManager;
 import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import adrians.game.state.StateManager;
+import pierreSquared.SquareRunner.R;
 
 /**
  * Created by pierre on 06/02/16.
@@ -45,6 +53,7 @@ public class GameMainActivity extends Activity {
         prefs = getSharedPreferences(unlocksTag, 0);
         unlocked = retrieveUnlocked();
 
+        StateManager.setActivity(this);
         assets=getAssets();
         sGame = new GameView(this, GAME_WIDTH, GAME_HEIGHT);
         setContentView(sGame);
@@ -83,7 +92,23 @@ public class GameMainActivity extends Activity {
         sGame.onPause();
     }
 
-//    public static void toggleSound() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 444) {
+            Log.v("Login", "Login Activity result");
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            if(result.isSuccess()) {
+                Log.v("Login", "All login successfull!");
+                StateManager.setSignedInAccount(result.getSignInAccount());
+            }
+            else {
+                Log.v("Login unsucessful", "code=" + result.getStatus().getStatusCode());
+            }
+        }
+    }
+
+    //    public static void toggleSound() {
 //        playSound ^= true;
 //        if(playSound) {
 //            Assets.resumeMusic();
