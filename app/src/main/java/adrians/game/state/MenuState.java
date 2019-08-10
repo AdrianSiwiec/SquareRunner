@@ -28,6 +28,8 @@ import adrians.framework.util.XmlParser;
 import adrians.framework.util.button.MessageButton;
 import adrians.game.camera.Camera;
 
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
+
 /**
  * Created by pierre on 17/03/16.
  */
@@ -87,7 +89,7 @@ public class MenuState extends State {
                                 ));
                                 if (buttonName.equals("Play")) {
                                     playButton = (MessageButton) worldObjects.lastElement();
-                                } else if (buttonName.equals("Login")) {
+                                } else if (buttonName.equals("Custom Level")) {
                                     aboutButton = (MessageButton) worldObjects.lastElement();
                                 } else if (buttonName.equals("Back")) {
                                     backButtons.addLast((MessageButton) worldObjects.lastElement());
@@ -97,9 +99,7 @@ public class MenuState extends State {
                                 cameraWidth = width / 2;
                                 worldCamera = new Camera(cameraPos.x, cameraPos.y, cameraWidth, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
                             } else if (lastGroup.equals("Levels")) {
-                                if (!unlocked.contains(buttonName)) {
-                                    lastGroupColor = fontColor;
-                                }
+
                                 worldObjects.addElement(new MessageButton(new PointF(x + width / 2, y + height / 2),
                                         new PointF(width / 2, height / 2), buttonName, Color.parseColor(lastGroupColor),
                                         Color.parseColor(fontColor), (int) (worldCamera.getScreenDistance(height * 0.5f))));
@@ -131,13 +131,14 @@ public class MenuState extends State {
             worldCamera.moveSmoothly(worldCamera.getPos(), levelCameraPos, 0.5f);
         }
         for (final MessageButton messageButton : levelButtons) {
-            if (messageButton.gotPushed() && unlocked.contains(messageButton.getMessage())) {
+            if (messageButton.gotPushed() ) {
                 worldCamera.moveSmoothly(worldCamera.getPos(),
                         new PointF(messageButton.getPos().x, messageButton.getPos().y + messageButton.getSize().y * 0.9f), 0.5f);
                 worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(0.01f, 0.01f), 0.5f, new Caller() {
                     @Override
                     public void call() {
-                        StateManager.pushState(new PlayState(messageButton.getMessage()));
+                        StateManager.pushState(
+                                new PlayState("Levels/Level" + messageButton.getMessage() + ".tmx"));
                     }
                 });
             }
@@ -148,40 +149,13 @@ public class MenuState extends State {
             }
         }
         if (aboutButton.gotPushed()) {
-            GoogleSignInOptions signInOptions =
-                    GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN;
-            GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(StateManager.getContext());
+            Intent intent = new Intent((Intent.ACTION_OPEN_DOCUMENT));
 
-            Log.v("Login", "Login Button got pushed");
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
 
-            final GoogleSignInAccount[] signedInAccount = new GoogleSignInAccount[1];
+            intent.setType("*/*");
 
-            if (GoogleSignIn.hasPermissions(account, signInOptions.getScopeArray())) {
-                Log.v("Login", "Already logged in!");
-                signedInAccount[0] = account;
-            } else {
-                Log.v("Login", "Attempting login");
-                final GoogleSignInClient signInClient = GoogleSignIn.getClient(StateManager.getContext(), signInOptions );
-
-                signInClient.silentSignIn().addOnCompleteListener(StateManager.getActivity(), new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        if (task.isSuccessful()) {
-                            Log.v("Login task", "Succesfull");
-                            signedInAccount[0] = task.getResult();
-                        } else {
-                            Log.v("Login task", "UnSuccesfull");
-
-                            GoogleSignInClient client = GoogleSignIn.getClient(StateManager.getContext(), GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
-                            Intent intent = client.getSignInIntent();
-
-                            StateManager.getActivity().startActivityForResult(intent, 444 );
-                        }
-                    }
-                });
-            }
-
-//            worldCamera.moveSmoothly(worldCamera.getPos(), new PointF(worldCamera.getPos().x, worldCamera.getPos().y+140), 1);
+            StateManager.getActivity().startActivityForResult(intent, StateManager.GetFileActivityCode);
         }
     }
 

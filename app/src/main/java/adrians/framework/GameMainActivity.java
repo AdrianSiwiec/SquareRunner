@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Point;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import java.util.HashSet;
 import java.util.Set;
 
+import adrians.game.state.PlayState;
 import adrians.game.state.StateManager;
 import pierreSquared.SquareRunner.R;
 
@@ -95,15 +97,14 @@ public class GameMainActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 444) {
-            Log.v("Login", "Login Activity result");
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            if(result.isSuccess()) {
-                Log.v("Login", "All login successfull!");
-                StateManager.setSignedInAccount(result.getSignInAccount());
-            }
-            else {
-                Log.v("Login unsucessful", "code=" + result.getStatus().getStatusCode());
+        if(requestCode == StateManager.GetFileActivityCode) {
+            Uri uri = null;
+            if(data != null) {
+                uri = data.getData();
+                assert uri != null;
+                Log.i("LOL", uri.toString());
+
+                StateManager.pushState(new PlayState(uri.toString()));
             }
         }
     }

@@ -18,6 +18,8 @@ public class StateManager {
     private static Activity activity;
     private static GoogleSignInAccount signedInAccount;
 
+    public static int GetFileActivityCode = 42;
+
     public synchronized static void pushState(State state) {
         stateStack.push(state);
     }

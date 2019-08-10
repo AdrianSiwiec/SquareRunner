@@ -1,6 +1,7 @@
 package adrians.game.state;
 
 import android.graphics.PointF;
+import android.util.Log;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +10,7 @@ import adrians.framework.Assets;
 import adrians.framework.GameMainActivity;
 import adrians.framework.util.Caller;
 import adrians.framework.util.Painter;
+import adrians.framework.util.XmlParser;
 import adrians.framework.util.button.PushButton;
 import adrians.game.camera.Camera;
 import adrians.game.model.TouchListener;
@@ -26,7 +28,20 @@ public class PlayState extends State{
     Level currentLevel;
     TouchListener touchListener;
     String levelName;
+    private void LoadLevelObjects() {
+        worldCamera = new Camera(currentLevel.getCameraPos().x, currentLevel.getCameraPos().y,
+                -1.1f, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
+        worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(currentLevel.getCameraSize().x,
+                currentLevel.getCameraSize().x*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH), 0);
+        player = new PlayerSquare(currentLevel.getPlayerPos(), currentLevel.getPlayerSize(),
+                currentLevel.getPlayerColor(), touchListener);
+        worldCamera.setModeFollowLoosely(player, 9, 10);
+    }
+
     public PlayState(String levelName) {
+
+        Log.i("Level name", levelName);
+
         this.levelName = levelName;
         fixedObjects.addElement(new PushButton(new PointF(120, -45), new PointF(10, 10),
                 Assets.pauseButtonBitmap, Assets.pauseButtonBitmap));
@@ -39,13 +54,12 @@ public class PlayState extends State{
 
         currentLevel = LevelGenerator.generateLevel(levelName);
 
-        worldCamera = new Camera(currentLevel.getCameraPos().x, currentLevel.getCameraPos().y,
-                0.1f, GameMainActivity.GAME_WIDTH, GameMainActivity.GAME_HEIGHT);
-        worldCamera.moveSmoothly(worldCamera.getSize(), new PointF(currentLevel.getCameraSize().x,
-                currentLevel.getCameraSize().x*GameMainActivity.GAME_HEIGHT/GameMainActivity.GAME_WIDTH), 1);
-        player = new PlayerSquare(currentLevel.getPlayerPos(), currentLevel.getPlayerSize(),
-                currentLevel.getPlayerColor(), touchListener);
-        worldCamera.setModeFollowLoosely(player, 10, 10);
+        try{
+            LoadLevelObjects();
+        } catch (Exception e) {
+            currentLevel = LevelGenerator.generateLevel(XmlParser.errorLevelFilename);
+            LoadLevelObjects();
+        }
     }
 
     @Override
@@ -84,10 +98,14 @@ public class PlayState extends State{
         pauseButton.update(delta);
         if(currentLevel.goal.isTouching(player, 0)) {
             if(!player.isHappy()) {
-                String nextLevel = ""+(new Integer(levelName)+1);
-                Set<String> unlckd = new HashSet<String>(GameMainActivity.getUnlocked());
-                unlckd.add(nextLevel);
-                GameMainActivity.setUnlocked(unlckd);
+                try {
+                    String nextLevel = "" + (new Integer(levelName) + 1);
+                    Set<String> unlckd = new HashSet<String>(GameMainActivity.getUnlocked());
+                    unlckd.add(nextLevel);
+                    GameMainActivity.setUnlocked(unlckd);
+                } catch (Exception e) {
+                    //Non-regular levels, don't unlock
+                }
                 pauseButton.moveSmoothly(pauseButton.getPos(), new PointF(120, -45), 0.5f);
                 worldCamera.setModeFixed();
                 worldCamera.moveSmoothly(worldCamera.getPos(), currentLevel.goal.getPos(), 2f);

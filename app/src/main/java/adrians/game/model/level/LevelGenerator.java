@@ -32,7 +32,7 @@ public class LevelGenerator {
 
     public static Level generateLevel(String levelName) {
         Level level = new Level();
-        XmlParser.openFile("Levels/Level"+levelName+".tmx");
+        XmlParser.openFile(levelName);
         try {
             int event = XmlParser.p.getEventType();
             String lastGroup=null, lastGroupColor = null;
